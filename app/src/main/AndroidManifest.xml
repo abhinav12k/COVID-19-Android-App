@@ -11,14 +11,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.UIDesign">
-        <activity
-            android:name="com.example.covid19.SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+        <activity android:name="com.example.covid19.SettingsActivity"/>
         <activity android:name="com.example.covid19.QuestionnaireActivity" />
         <activity android:name="com.example.covid19.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

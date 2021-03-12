@@ -1,7 +1,6 @@
 package com.example.covid19
 
 import android.content.Intent
-import android.content.res.Resources
 import android.os.Bundle
 import android.os.StrictMode
 import android.text.Spannable
@@ -27,26 +26,33 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
 
     // INITIALIZE VARIABLES
-    lateinit var questionnaireCardView: CardView
-    lateinit var statesSpinner: Spinner
-    lateinit var dateTextView: TextView
-    lateinit var settingsImageView: ImageView
-    lateinit var latestUpdateTitleTextView: TextView
-    lateinit var latestUpdateTextView: TextView
-    lateinit var positivesTextView: TextView
-    lateinit var hospitalizedTextView: TextView
-    lateinit var deathsTextView: TextView
-    lateinit var detailsLinkTextView: TextView
+    private lateinit var questionnaireCardView: CardView
+    private lateinit var statesSpinner: Spinner
+    private lateinit var dateTextView: TextView
+    private lateinit var settingsImageView: ImageView
+    private lateinit var latestUpdateTitleTextView: TextView
+    private lateinit var latestUpdateTextView: TextView
+    private lateinit var positivesTextView: TextView
+    private lateinit var hospitalizedTextView: TextView
+    private lateinit var deathsTextView: TextView
+    private lateinit var detailsLinkTextView: TextView
 
-    lateinit var usInfectedAndDeaths: USInfectedAndDeathsResult
+    private lateinit var usInfectedAndDeaths: USInfectedAndDeathsResult
+    private lateinit var usInfectedOverTime: MutableMap<String, Int>
+    private lateinit var usDeathsOverTime: MutableMap<String, Int>
 
-    lateinit var usInfectedOverTime: MutableMap<String, Int>
-    lateinit var usDeathsOverTime: MutableMap<String, Int>
+    private lateinit var statesInfectedAndDeaths: StatesInfectedAndDeathsResult
+    private lateinit var statesInfectedOverTime : MutableMap<String, List<StatesInfectedAndDeathsItem>>
+    private lateinit var statesDeathsOverTime : MutableMap<String, List<StatesInfectedAndDeathsItem>>
 
-    lateinit var statesInfectedAndDeaths: StatesInfectedAndDeathsResult
+    private lateinit var pfizerUSAndStatesVaccinations: USAndStatesVaccinationsResult
+    private lateinit var modernaUSAndStatesVaccinations: USAndStatesVaccinationsResult
+    private lateinit var janssenUSAndStatesVaccinations: USAndStatesVaccinationsResult
 
-    lateinit var statesInfectedOverTime : MutableMap<String, List<StatesInfectedAndDeathsItem>>
-    lateinit var statesDeathsOverTime : MutableMap<String, List<StatesInfectedAndDeathsItem>>
+    private lateinit var usVaccinatedOverTime: MutableMap<String, Int>
+    private lateinit var statesVaccinatedOverTime: MutableMap<String, List<USAndStatesVaccinationsItem>>
+    private var usVaccinations: Int = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // SHOW LAYOUT
@@ -65,36 +71,66 @@ class MainActivity : AppCompatActivity() {
         hospitalizedTextView = findViewById(R.id.tv_hospitalized)
         deathsTextView = findViewById(R.id.tv_deaths)
 
-        // REQUEST ALL DATA AND SET DEFAULT DATA
         // ALLOW RUN IN NETWORK ON MAIN THREAD
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
+        // REQUEST DATA
         doAsync {
             uiThread {
                 try {
-                    usInfectedAndDeaths = USInfectedAndDeathsRequest().getResult()!!
-
+                    // INITIALIZE MAPS
                     usInfectedOverTime = mutableMapOf()
                     usDeathsOverTime = mutableMapOf()
+                    usVaccinatedOverTime = mutableMapOf()
+                    statesVaccinatedOverTime = mutableMapOf()
+                    statesInfectedOverTime = mutableMapOf()
+                    statesDeathsOverTime = mutableMapOf()
 
+                    // REQUEST U.S INFECTED AND DEATHS DATA
+                    usInfectedAndDeaths = USInfectedAndDeathsRequest().getResult()!!
+
+                    // POPULATE U.S INFECTED AND DEATHS MAPS
                     usInfectedAndDeaths.forEach { e ->
                         usInfectedOverTime[e.Date] = e.Confirmed
                         usDeathsOverTime[e.Date] = e.Deaths
                     }
 
+                    // REQUEST STATES INFECTED AND DEATHS DATA
                     statesInfectedAndDeaths = StatesInfectedAndDeathsRequest().getResult()!!
 
-                    statesInfectedOverTime = mutableMapOf()
-                    statesDeathsOverTime = mutableMapOf()
-
+                    // POPULATE STATES INFECTED AND DEATHS  MAPS
                     resources.getStringArray(R.array.states).forEach { e ->
                         statesInfectedOverTime[e] = statesInfectedAndDeaths.getInfected(e)
                         statesDeathsOverTime[e] = statesInfectedAndDeaths.getDeaths(e)
                     }
 
-                    // SET DEFAULT DATA (U.S NUMBERS)
-                    setDefaultData()
+                    // REQUEST U.S AND STATES VACCINES DATA
+                    pfizerUSAndStatesVaccinations = USAndStatesVaccinationsPfizerRequest().getResult()!!
+                    modernaUSAndStatesVaccinations = USAndStatesVaccinationsModernaRequest().getResult()!!
+                    janssenUSAndStatesVaccinations = USAndStatesVaccinationsJanssenRequest().getResult()!!
 
+                    // COMBINE DATA
+                    val allUSAndStatesVaccinations = (pfizerUSAndStatesVaccinations + modernaUSAndStatesVaccinations + janssenUSAndStatesVaccinations)
+                            .sortedWith(compareBy{ it.week_of_allocations })
+
+                    // POPULATE STATES VACCINES MAP
+                    resources.getStringArray(R.array.states).forEach { e ->
+                        statesVaccinatedOverTime[e] = pfizerUSAndStatesVaccinations.getVaccines(e) + modernaUSAndStatesVaccinations.getVaccines(e) + janssenUSAndStatesVaccinations.getVaccines(e)
+                                .sortedWith(compareBy{ it.week_of_allocations })
+                    }
+
+                    // POPULATE U.S VACCINES MAP
+                    var total = 0
+                    for (i in allUSAndStatesVaccinations.indices) {
+                        total += allUSAndStatesVaccinations[i]._1st_dose_allocations.toInt()
+                        usVaccinatedOverTime[allUSAndStatesVaccinations[i].week_of_allocations] = total
+                    }
+
+                    // GET TOTAL U.S VACCINATIONS
+                    usVaccinations = total
+
+                    // SET U.S DATA AS DEFAULT
+                    setDefaultData()
                 } catch (exception : Exception) {
                     println(exception)
                 }
@@ -107,9 +143,7 @@ class MainActivity : AppCompatActivity() {
 
         dateTextView.text = date
 
-        // SPINNER
         // SPINNER AND SPINNER ITEM STYLING AND DECLARATION
-        val statesMap = States().getStatesMap()
         val adapter: ArrayAdapter<*> = ArrayAdapter.createFromResource(
                 this,
                 R.array.states, R.layout.spinner_states_item
@@ -127,16 +161,25 @@ class MainActivity : AppCompatActivity() {
             ) {
                 // GET SELECTED STATE
                 val selected = adapterView?.getItemAtPosition(position)
-                // IF VALID STATE SELECTED
+
                 if (selected != "All States") {
+                    // GET ARRAY LISTS
                     val infected = statesInfectedOverTime[selected]!!
                     val deaths = statesDeathsOverTime[selected]!!
+                    val vaccinated = statesVaccinatedOverTime[selected]!!
+                    // GET LAST OBJECT
                     val lastInfected = infected[infected.size - 1]
                     val lastDeaths = deaths[deaths.size - 1]
-                    latestUpdateTitleTextView.text = " ${States().getStatesMap()[adapterView?.getItemAtPosition(position)]} Latest Updates"
+                    // SUM ALL OBJECTS IN ARRAY LIST
+                    var sumOfVaccinations = 0
+                    vaccinated.forEach { e ->
+                        sumOfVaccinations += e._1st_dose_allocations.toInt()
+                    }
+                    // ASSIGN DATA
+                    latestUpdateTitleTextView.text = "${States().getStatesMap()[adapterView?.getItemAtPosition(position)]} Latest Updates"
                     latestUpdateTextView.text = "Last updated on ${SimpleDateFormat("MMM d, yyyy · hh:mm a").format(SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(lastInfected.Date))}"
                     positivesTextView.text = NumberFormat.getNumberInstance(Locale.US).format(lastInfected.Confirmed)
-                    hospitalizedTextView.text = "Unknown"
+                    hospitalizedTextView.text = NumberFormat.getNumberInstance(Locale.US).format(sumOfVaccinations)
                     deathsTextView.text = NumberFormat.getNumberInstance(Locale.US).format(lastDeaths.Deaths)
                 } else {
                     setDefaultData()
@@ -190,10 +233,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun setDefaultData() {
         try {
+            // ASSIGN DATA
             latestUpdateTextView.text = "Last updated on ${SimpleDateFormat("MMM d, yyyy · hh:mm a").format(usInfectedAndDeaths.getDateUpdated())}"
-            positivesTextView.text = NumberFormat.getNumberInstance(Locale.US).format(usInfectedAndDeaths.getInfected())
-            hospitalizedTextView.text = "Unknown"
-            deathsTextView.text = NumberFormat.getNumberInstance(Locale.US).format(usInfectedAndDeaths.getDeaths())
+            positivesTextView.text = if (usInfectedAndDeaths.getInfected() != 0) NumberFormat.getNumberInstance(Locale.US).format(usInfectedAndDeaths.getInfected()) else "Unknown"
+            hospitalizedTextView.text = if (usVaccinations != 0) NumberFormat.getNumberInstance(Locale.US).format(usVaccinations) else "Unknown"
+            deathsTextView.text = if (usInfectedAndDeaths.getDeaths() != 0) NumberFormat.getNumberInstance(Locale.US).format(usInfectedAndDeaths.getDeaths()) else "Unknown"
         } catch (exception: Exception) {
             println(exception)
         }

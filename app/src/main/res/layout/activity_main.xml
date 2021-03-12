@@ -151,7 +151,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="48dp"
         android:fontFamily="@font/bold"
-        android:text="US"
+        android:text="US Latest Updates"
         android:textColor="@color/dark"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -283,7 +283,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/bold"
-                    android:text="HOSPITALIZED"
+                    android:text="VACCINATED"
                     android:textAlignment="center"
                     android:textColor="@color/gray"
                     android:textSize="10sp" />
