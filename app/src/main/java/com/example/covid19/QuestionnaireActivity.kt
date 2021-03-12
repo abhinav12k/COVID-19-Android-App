@@ -1,24 +1,26 @@
 package com.example.covid19
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 
 class QuestionnaireActivity : AppCompatActivity() {
 
-    lateinit var mainActivityButton : Button
+    lateinit var mainActivityButton : ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        theme.applyStyle(R.style.Theme_settings, true)
         setContentView(R.layout.activity_questionnaire)
 
         mainActivityButton = findViewById(R.id.back_from_questionnaire)
 
         mainActivityButton.setOnClickListener(View.OnClickListener {
-           onBackPressed()
+            onBackPressed()
         })
 
         // Remove title bar
@@ -27,7 +29,6 @@ class QuestionnaireActivity : AppCompatActivity() {
 
         // Suppress Dark Mode
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-
     }
 
     override fun onBackPressed() {

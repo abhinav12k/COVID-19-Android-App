@@ -1,9 +1,9 @@
 package com.example.covid19
 
 import android.content.Intent
+import android.content.res.Resources
 import android.os.Bundle
 import android.os.StrictMode
-import android.text.Html
 import android.text.Spannable
 import android.text.TextPaint
 import android.text.method.LinkMovementMethod
@@ -14,10 +14,11 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.cardview.widget.CardView
-import com.example.covid19.data.AllStatesRequest
-import com.example.covid19.data.SelectedStateRequest
+import androidx.core.text.HtmlCompat
+import com.example.covid19.data.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
+import java.lang.Exception
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -37,6 +38,16 @@ class MainActivity : AppCompatActivity() {
     lateinit var deathsTextView: TextView
     lateinit var detailsLinkTextView: TextView
 
+    lateinit var usInfectedAndDeaths: USInfectedAndDeathsResult
+
+    lateinit var usInfectedOverTime: MutableMap<String, Int>
+    lateinit var usDeathsOverTime: MutableMap<String, Int>
+
+    lateinit var statesInfectedAndDeaths: StatesInfectedAndDeathsResult
+
+    lateinit var statesInfectedOverTime : MutableMap<String, List<StatesInfectedAndDeathsItem>>
+    lateinit var statesDeathsOverTime : MutableMap<String, List<StatesInfectedAndDeathsItem>>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         // SHOW LAYOUT
         super.onCreate(savedInstanceState)
@@ -54,8 +65,41 @@ class MainActivity : AppCompatActivity() {
         hospitalizedTextView = findViewById(R.id.tv_hospitalized)
         deathsTextView = findViewById(R.id.tv_deaths)
 
-        // DEFAULT DATA
-        setDefaultData()
+        // REQUEST ALL DATA AND SET DEFAULT DATA
+        // ALLOW RUN IN NETWORK ON MAIN THREAD
+        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
+        doAsync {
+            uiThread {
+                try {
+                    usInfectedAndDeaths = USInfectedAndDeathsRequest().getResult()!!
+
+                    usInfectedOverTime = mutableMapOf()
+                    usDeathsOverTime = mutableMapOf()
+
+                    usInfectedAndDeaths.forEach { e ->
+                        usInfectedOverTime[e.Date] = e.Confirmed
+                        usDeathsOverTime[e.Date] = e.Deaths
+                    }
+
+                    statesInfectedAndDeaths = StatesInfectedAndDeathsRequest().getResult()!!
+
+                    statesInfectedOverTime = mutableMapOf()
+                    statesDeathsOverTime = mutableMapOf()
+
+                    resources.getStringArray(R.array.states).forEach { e ->
+                        statesInfectedOverTime[e] = statesInfectedAndDeaths.getInfected(e)
+                        statesDeathsOverTime[e] = statesInfectedAndDeaths.getDeaths(e)
+                    }
+
+                    // SET DEFAULT DATA (U.S NUMBERS)
+                    setDefaultData()
+
+                } catch (exception : Exception) {
+                    println(exception)
+                }
+            }
+        }
 
         // TODAY'S DATE
         val calendar = Calendar.getInstance()
@@ -64,13 +108,13 @@ class MainActivity : AppCompatActivity() {
         dateTextView.text = date
 
         // SPINNER
-        // SPINNER STYLING AND ITEM DECLARATION
-        val statesMap = setStates()
+        // SPINNER AND SPINNER ITEM STYLING AND DECLARATION
+        val statesMap = States().getStatesMap()
         val adapter: ArrayAdapter<*> = ArrayAdapter.createFromResource(
                 this,
-                R.array.states, R.layout.spinner_item
+                R.array.states, R.layout.spinner_states_item
         )
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
+        adapter.setDropDownViewResource(R.layout.spinner_states_dropdown_item)
         statesSpinner.adapter = adapter
 
         // SPINNER LISTENER
@@ -82,35 +126,25 @@ class MainActivity : AppCompatActivity() {
                     id: Long
             ) {
                 // GET SELECTED STATE
-                val selected = adapterView?.getItemAtPosition(position).toString().replace("\\s".toRegex(), "")
-                // IF NOT DEFAULT STATE
-                if (selected != "AllStates") {
-                    doAsync {
-                        uiThread {
-                            // ALLOW RUN IN NETWORK ON MAIN THREAD
-                            val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
-                            StrictMode.setThreadPolicy(policy)
-                            // GET API RESULT
-                            val result = SelectedStateRequest().getResult(statesMap[selected]?.toLowerCase().toString())
-                            if (result != null) {
-                                val positiveText = if (result.getCurrPositives() != 0) NumberFormat.getNumberInstance(Locale.US).format(result.getCurrPositives()) else "Unknown"
-                                val hospitalizedText = if (result.getCurrHospitalized() != 0) NumberFormat.getNumberInstance(Locale.US).format(result.getCurrHospitalized()) else "Unknown"
-                                val deathsText = if (result.getCurrDeaths() != 0) NumberFormat.getNumberInstance(Locale.US).format(result.getCurrDeaths()) else "Unknown"
-
-                                latestUpdateTitleTextView.text = "${statesMap[selected]} Latest Update"
-                                latestUpdateTextView.text = "Last updated on ${SimpleDateFormat("MMM d, yyyy · hh:mm a").format(result.getLastDateModified())}"
-                                positivesTextView.text = positiveText
-                                hospitalizedTextView.text = hospitalizedText
-                                deathsTextView.text = deathsText
-                            }
-                        }
-                    }
+                val selected = adapterView?.getItemAtPosition(position)
+                // IF VALID STATE SELECTED
+                if (selected != "All States") {
+                    val infected = statesInfectedOverTime[selected]!!
+                    val deaths = statesDeathsOverTime[selected]!!
+                    val lastInfected = infected[infected.size - 1]
+                    val lastDeaths = deaths[deaths.size - 1]
+                    latestUpdateTitleTextView.text = " ${States().getStatesMap()[adapterView?.getItemAtPosition(position)]} Latest Updates"
+                    latestUpdateTextView.text = "Last updated on ${SimpleDateFormat("MMM d, yyyy · hh:mm a").format(SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(lastInfected.Date))}"
+                    positivesTextView.text = NumberFormat.getNumberInstance(Locale.US).format(lastInfected.Confirmed)
+                    hospitalizedTextView.text = "Unknown"
+                    deathsTextView.text = NumberFormat.getNumberInstance(Locale.US).format(lastDeaths.Deaths)
                 } else {
                     setDefaultData()
+                    latestUpdateTitleTextView.text = "US Latest Updates"
                 }
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                // IGNORE (THERE IS ALWAYS AN ELEMENT SELECTED)
+                // IGNORE: THERE IS ALWAYS AN ELEMENT SELECTED
             }
         }
 
@@ -132,10 +166,9 @@ class MainActivity : AppCompatActivity() {
             this.overridePendingTransition(0, 0);
         })
 
-        // DETAILS LINK
-        if (detailsLinkTextView != null) {
+            // DETAILS LINK
             // REMOVE UNDERLINE FROM HYPERTEXT
-            val s = Html.fromHtml("<a href='https://covid.cdc.gov/covid-data-tracker/#datatracker-home'>Details</a>") as Spannable
+            val s = HtmlCompat.fromHtml("<a href='https://covid.cdc.gov/covid-data-tracker/#datatracker-home'>Details</a>", HtmlCompat.FROM_HTML_MODE_LEGACY) as Spannable
             for (u in s.getSpans(0, s.length, URLSpan::class.java)) {
                 s.setSpan(object : UnderlineSpan() {
                     override fun updateDrawState(tp: TextPaint) {
@@ -144,9 +177,8 @@ class MainActivity : AppCompatActivity() {
                 }, s.getSpanStart(u), s.getSpanEnd(u), 0)
             }
             detailsLinkTextView.text = s
-            // OPEN WEB WHEN LINK CLICKED
+             // OPEN WEB WHEN LINK CLICKED
             detailsLinkTextView.movementMethod = LinkMovementMethod.getInstance()
-        }
 
         // REMOVE TITLE BAR
         if (supportActionBar != null)
@@ -157,71 +189,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setDefaultData() {
-        doAsync {
-            val result = AllStatesRequest().getResult()
-            uiThread {
-                if (result != null) {
-                    latestUpdateTextView.text = "Last updated on ${SimpleDateFormat("MMM d, yyyy · hh:mm a").format(result.getLastDateModified())}"
-                    positivesTextView.text = NumberFormat.getNumberInstance(Locale.US).format(result.getCurrPositives())
-                    hospitalizedTextView.text =  NumberFormat.getNumberInstance(Locale.US).format(result.getCurrHospitalized())
-                    deathsTextView.text = NumberFormat.getNumberInstance(Locale.US).format(result.getCurrDeaths())
-                }
-            }
+        try {
+            latestUpdateTextView.text = "Last updated on ${SimpleDateFormat("MMM d, yyyy · hh:mm a").format(usInfectedAndDeaths.getDateUpdated())}"
+            positivesTextView.text = NumberFormat.getNumberInstance(Locale.US).format(usInfectedAndDeaths.getInfected())
+            hospitalizedTextView.text = "Unknown"
+            deathsTextView.text = NumberFormat.getNumberInstance(Locale.US).format(usInfectedAndDeaths.getDeaths())
+        } catch (exception: Exception) {
+            println(exception)
         }
-    }
-
-    private fun setStates(): Map<String, String> {
-        return mapOf(
-                "Alaska" to "AK",
-                "Alabama" to "AL",
-                "Arkansas" to "AR",
-                "Arizona" to "AZ",
-                "California" to "CA",
-                "Colorado" to "CO",
-                "Connecticut" to "CT",
-                "Delaware" to "DE",
-                "Florida" to "FL",
-                "Georgia" to "GA",
-                "Hawaii" to "HI",
-                "Iowa" to "IA",
-                "Idaho" to "ID",
-                "Illinois" to "IL",
-                "Indiana" to "IN",
-                "Kansas" to "KS",
-                "Kentucky" to "KY",
-                "Louisiana" to "LA",
-                "Massachusetts" to "MA",
-                "Maryland" to "MD",
-                "Maine" to "ME",
-                "Michigan" to "MI",
-                "Minnesota" to "MN",
-                "Missouri" to "MO",
-                "Mississippi" to "MS",
-                "Montana" to "MT",
-                "NorthCarolina" to "NC",
-                "NorthDakota" to "ND",
-                "Nebraska" to "NE",
-                "NewHampshire" to "NH",
-                "NewJersey" to "NJ",
-                "NewMexico" to "NM",
-                "Nevada" to "NV",
-                "NewYork" to "NY",
-                "Ohio" to "OH",
-                "Oklahoma" to "OK",
-                "Oregon" to "OR",
-                "Pennsylvania" to "PA",
-                "RhodeIsland" to "RI",
-                "SouthCarolina" to "SC",
-                "SouthDakota" to "SD",
-                "Tennessee" to "TN",
-                "Texas" to "TX",
-                "Utah" to "UT",
-                "Virginia" to "VA",
-                "Vermont" to "VT",
-                "Washington" to "WA",
-                "Wisconsin" to "WI",
-                "WestVirginia" to "WV",
-                "Wyoming" to "WY",
-        )
     }
 }

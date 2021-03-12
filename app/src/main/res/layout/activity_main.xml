@@ -151,7 +151,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="48dp"
         android:fontFamily="@font/bold"
-        android:text="US Latest Update"
+        android:text="US"
         android:textColor="@color/dark"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -166,6 +166,7 @@
         android:drawableRight="@drawable/ic_check"
         android:drawablePadding="5dp"
         android:drawableTint="@color/gray"
+        android:text="@string/loading"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_latest_update_title" />
 
@@ -227,7 +228,8 @@
                     android:fontFamily="@font/bold"
                     android:textAlignment="center"
                     android:textColor="@color/orange"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:text="@string/loading"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -273,7 +275,8 @@
                     android:fontFamily="@font/bold"
                     android:textAlignment="center"
                     android:textColor="@color/green"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:text="@string/loading"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -319,7 +322,8 @@
                     android:fontFamily="@font/bold"
                     android:textAlignment="center"
                     android:textColor="@color/red"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:text="@string/loading"/>
 
                 <TextView
                     android:layout_width="match_parent"

@@ -4,6 +4,7 @@
     <string name="card_text_2">Discover your risk of serious hospitalization due COVID-19 infection.</string>
     <string name="card_text_1">My Hospitalization Risk</string>
     <string name="cdc_link"><a href="https://covid.cdc.gov/covid-data-tracker/#datatracker-home">Details</a></string>
+    <string name="loading">Loading</string>
 
     <string-array name="states">
         <item>All States</item>
