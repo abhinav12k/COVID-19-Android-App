@@ -1,357 +1,450 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+		xmlns:app="http://schemas.android.com/apk/res-auto"
+		xmlns:tools="http://schemas.android.com/tools"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/tv_outbreak"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:fontFamily="@font/bold"
-        android:letterSpacing="0.03"
-        android:text="Current outbreak"
-        android:textColor="@color/dark"
-        android:textSize="17sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+	<androidx.constraintlayout.widget.ConstraintLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			tools:context=".MainActivity">
 
-    <Spinner
-        android:id="@+id/sp_states"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="12dp"
-        android:background="@null"
-        android:entries="@array/states"
-        android:spinnerMode="dropdown"
-        android:textAlignment="textStart"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_outbreak"></Spinner>
+		<TextView
+				android:id="@+id/tv_outbreak"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="24dp"
+				android:layout_marginTop="24dp"
+				android:fontFamily="@font/bold"
+				android:letterSpacing="0.03"
+				android:text="Current outbreak"
+				android:textColor="@color/dark"
+				android:textSize="17sp"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="12dp"
-        android:fontFamily="@font/regular"
-        android:textColor="@color/gray"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sp_states" />
+		<Spinner
+				android:id="@+id/sp_states"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="24dp"
+				android:layout_marginTop="12dp"
+				android:background="@null"
+				android:entries="@array/states"
+				android:spinnerMode="dropdown"
+				android:textAlignment="textStart"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@+id/tv_outbreak" />
 
-    <ImageView
-        android:id="@+id/iv_settings"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
-        android:background="@drawable/ic_setings"
-        android:backgroundTint="@color/gray"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+		<TextView
+				android:id="@+id/tv_date"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="24dp"
+				android:layout_marginTop="12dp"
+				android:fontFamily="@font/regular"
+				android:textColor="@color/gray"
+				android:textSize="16sp"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@+id/sp_states" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cv_questionnaire"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginStart="22dp"
-        android:layout_marginTop="48dp"
-        app:cardBackgroundColor="@android:color/transparent"
-        app:cardCornerRadius="0dp"
-        app:cardElevation="100dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_date">
+		<ImageView
+				android:id="@+id/iv_settings"
+				android:layout_width="30dp"
+				android:layout_height="30dp"
+				android:layout_marginTop="24dp"
+				android:layout_marginEnd="24dp"
+				android:background="@drawable/ic_setings"
+				android:backgroundTint="@color/gray"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cv_questionnaire_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="-10dp"
-            android:backgroundTint="@color/dark"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?android:attr/selectableItemBackground"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="0dp"
-            app:cardUseCompatPadding="false">
+		<androidx.cardview.widget.CardView
+				android:id="@+id/cv_questionnaire"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:layout_marginStart="22dp"
+				android:layout_marginTop="48dp"
+				app:cardBackgroundColor="@android:color/transparent"
+				app:cardCornerRadius="0dp"
+				app:cardElevation="100dp"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@+id/tv_date">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+			<androidx.cardview.widget.CardView
+					android:id="@+id/cv_questionnaire_button"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginEnd="-10dp"
+					android:backgroundTint="@color/dark"
+					android:clickable="true"
+					android:focusable="true"
+					android:foreground="?android:attr/selectableItemBackground"
+					app:cardCornerRadius="5dp"
+					app:cardElevation="0dp"
+					app:cardUseCompatPadding="false">
 
-                <ImageView
-                    android:layout_width="65dp"
-                    android:layout_height="64dp"
-                    android:layout_gravity="bottom"
-                    android:contentDescription="@string/blank"
-                    android:src="@drawable/cv_virus_corner" />
+				<LinearLayout
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="135dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+					<ImageView
+							android:layout_width="65dp"
+							android:layout_height="64dp"
+							android:layout_gravity="bottom"
+							android:contentDescription="@string/blank"
+							android:src="@drawable/cv_virus_corner" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/bold"
-                        android:letterSpacing="0.03"
-                        android:paddingStart="10dp"
-                        android:paddingTop="30dp"
-                        android:paddingBottom="15dp"
-                        android:text="@string/card_text_1"
-                        android:textColor="@color/white"
-                        android:textSize="17sp" />
+					<LinearLayout
+							android:layout_width="wrap_content"
+							android:layout_height="135dp"
+							android:layout_weight="1"
+							android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/regular"
-                        android:lineSpacingExtra="4dp"
-                        android:maxLines="2"
-                        android:minLines="2"
-                        android:paddingStart="10dp"
-                        android:text="@string/card_text_2"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/white"
-                        android:textSize="12sp" />
-                </LinearLayout>
+						<TextView
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:fontFamily="@font/bold"
+								android:letterSpacing="0.03"
+								android:paddingStart="10dp"
+								android:paddingTop="30dp"
+								android:paddingBottom="15dp"
+								android:text="@string/card_text_1"
+								android:textColor="@color/white"
+								android:textSize="18sp" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2.5"
-                    android:gravity="center"
-                    android:paddingStart="20dp"
-                    app:drawableStartCompat="@drawable/ic_arrow"
-                    app:drawableTint="@color/white" />
+						<TextView
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:fontFamily="@font/regular"
+								android:lineSpacingExtra="4dp"
+								android:maxLines="2"
+								android:minLines="2"
+								android:paddingStart="10dp"
+								android:text="@string/card_text_2"
+								android:textAlignment="textStart"
+								android:textColor="@color/white"
+								android:textSize="13sp" />
+					</LinearLayout>
 
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-    </androidx.cardview.widget.CardView>
+					<TextView
+							android:layout_width="match_parent"
+							android:layout_height="match_parent"
+							android:layout_weight="2.5"
+							android:gravity="center"
+							android:paddingStart="20dp"
+							app:drawableStartCompat="@drawable/ic_arrow"
+							app:drawableTint="@color/white" />
+				</LinearLayout>
+			</androidx.cardview.widget.CardView>
+		</androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/tv_latest_update_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="48dp"
-        android:fontFamily="@font/bold"
-        android:text="US Latest Updates"
-        android:textColor="@color/dark"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cv_questionnaire" />
+		<TextView
+				android:id="@+id/tv_latest_update_title"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="24dp"
+				android:layout_marginTop="48dp"
+				android:fontFamily="@font/bold"
+				android:text="US Cases Overview"
+				android:textColor="@color/dark"
+				android:textSize="20sp"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@+id/cv_questionnaire" />
 
-    <TextView
-        android:id="@+id/tv_latest_update"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:drawableRight="@drawable/ic_check"
-        android:drawablePadding="5dp"
-        android:drawableTint="@color/gray"
-        android:text="@string/loading"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_latest_update_title" />
+		<TextView
+				android:id="@+id/tv_latest_update"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="24dp"
+				android:layout_marginTop="8dp"
+				android:drawableRight="@drawable/ic_check"
+				android:drawablePadding="5dp"
+				android:drawableTint="@color/gray"
+				android:text="@string/loading"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@+id/tv_latest_update_title" />
 
-    <TextView
-        android:id="@+id/tv_details"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
-        android:layout_marginEnd="24dp"
-        android:fontFamily="@font/regular"
-        android:text="@string/cdc_link"
-        android:textColorHighlight="@color/white"
-        android:textColorLink="@color/blue"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_latest_update_title" />
+		<TextView
+				android:id="@+id/tv_details"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="7dp"
+				android:layout_marginEnd="24dp"
+				android:fontFamily="@font/regular"
+				android:text="@string/cdc_link"
+				android:textColorHighlight="@color/white"
+				android:textColorLink="@color/blue"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintTop_toBottomOf="@+id/tv_latest_update_title" />
 
+		<LinearLayout
+				android:id="@+id/linearLayout"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="16dp"
+				android:layout_marginTop="32dp"
+				android:layout_marginEnd="16dp"
+				android:orientation="horizontal"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@+id/tv_latest_update">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_latest_update">
+			<com.google.android.material.card.MaterialCardView
+					android:layout_width="0dp"
+					android:layout_height="125sp"
+					android:layout_gravity="center_vertical"
+					android:layout_margin="5dp"
+					android:layout_weight="0.33"
+					android:adjustViewBounds="true"
+					app:cardCornerRadius="5dp"
+					app:strokeColor="@color/light_gray"
+					app:strokeWidth="1dp">
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="0dp"
-            android:layout_height="125sp"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="5dp"
-            android:layout_weight="0.33"
-            android:adjustViewBounds="true"
-            app:cardCornerRadius="5dp"
-            app:strokeColor="@color/light_gray"
-            app:strokeWidth="1dp">
+				<LinearLayout
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:clickable="true"
+						android:foreground="?android:attr/selectableItemBackground"
+						android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+					<ImageView
+							android:layout_width="25dp"
+							android:layout_height="25dp"
+							android:layout_gravity="center"
+							android:layout_marginTop="17dp"
+							android:layout_marginBottom="10dp"
+							android:background="@drawable/ic_infected"
+							android:backgroundTint="@color/orange" />
 
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:background="@drawable/ic_infected"
-                    android:backgroundTint="@color/orange" />
+					<TextView
+							android:id="@+id/tv_infected"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:fontFamily="@font/bold"
+							android:text="@string/loading"
+							android:textAlignment="center"
+							android:textColor="@color/orange"
+							android:textSize="16sp" />
 
-                <TextView
-                    android:id="@+id/tv_positive"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/bold"
-                    android:textAlignment="center"
-                    android:textColor="@color/orange"
-                    android:textSize="16sp"
-                    android:text="@string/loading"/>
+					<TextView
+							android:id="@+id/tv_new_infected"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:layout_marginBottom="2dp"
+							android:fontFamily="@font/regular"
+							android:text="@string/loading"
+							android:textAlignment="center"
+							android:textColor="@color/gray"
+							android:textSize="12sp" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily="@font/bold"
-                    android:text="INFECTED"
-                    android:textAlignment="center"
-                    android:textColor="@color/gray"
-                    android:textSize="10sp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+					<TextView
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:layout_marginTop="5dp"
+							android:fontFamily="@font/bold"
+							android:text="INFECTED"
+							android:textAlignment="center"
+							android:textColor="@color/gray"
+							android:textSize="10sp" />
+				</LinearLayout>
+			</com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="0dp"
-            android:layout_height="125sp"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="5dp"
-            android:layout_weight="0.33"
-            android:adjustViewBounds="true"
-            app:cardCornerRadius="5dp"
-            app:strokeColor="@color/light_gray"
-            app:strokeWidth="1dp">
+			<com.google.android.material.card.MaterialCardView
+					android:layout_width="0dp"
+					android:layout_height="125sp"
+					android:layout_gravity="center_vertical"
+					android:layout_margin="5dp"
+					android:layout_weight="0.33"
+					android:adjustViewBounds="true"
+					app:cardCornerRadius="5dp"
+					app:strokeColor="@color/light_gray"
+					app:strokeWidth="1dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+				<LinearLayout
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:clickable="true"
+						android:foreground="?android:attr/selectableItemBackground"
+						android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:background="@drawable/ic_recovered"
-                    android:backgroundTint="@color/green" />
+					<ImageView
+							android:layout_width="25dp"
+							android:layout_height="25dp"
+							android:layout_gravity="center"
+							android:layout_marginTop="17dp"
+							android:layout_marginBottom="10dp"
+							android:background="@drawable/ic_recovered"
+							android:backgroundTint="@color/green" />
 
-                <TextView
-                    android:id="@+id/tv_hospitalized"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/bold"
-                    android:textAlignment="center"
-                    android:textColor="@color/green"
-                    android:textSize="16sp"
-                    android:text="@string/loading"/>
+					<TextView
+							android:id="@+id/tv_vaccinated"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:fontFamily="@font/bold"
+							android:text="@string/loading"
+							android:textAlignment="center"
+							android:textColor="@color/green"
+							android:textSize="16sp" />
+					<TextView
+							android:id="@+id/tv_new_vaccinated"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:layout_marginBottom="2dp"
+							android:fontFamily="@font/regular"
+							android:text="@string/loading"
+							android:textAlignment="center"
+							android:textColor="@color/gray"
+							android:textSize="12sp" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily="@font/bold"
-                    android:text="VACCINATED"
-                    android:textAlignment="center"
-                    android:textColor="@color/gray"
-                    android:textSize="10sp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+					<TextView
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:layout_marginTop="5dp"
+							android:fontFamily="@font/bold"
+							android:text="VACCINATED"
+							android:textAlignment="center"
+							android:textColor="@color/gray"
+							android:textSize="10sp" />
+				</LinearLayout>
+			</com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="0dp"
-            android:layout_height="125sp"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="5dp"
-            android:layout_weight="0.33"
-            android:adjustViewBounds="true"
-            app:cardCornerRadius="5dp"
-            app:strokeColor="@color/light_gray"
-            app:strokeWidth="1dp">
+			<com.google.android.material.card.MaterialCardView
+					android:layout_width="0dp"
+					android:layout_height="125sp"
+					android:layout_gravity="center_vertical"
+					android:layout_margin="5dp"
+					android:layout_weight="0.33"
+					android:adjustViewBounds="true"
+					app:cardCornerRadius="5dp"
+					app:strokeColor="@color/light_gray"
+					app:strokeWidth="1dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+				<LinearLayout
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:clickable="true"
+						android:foreground="?android:attr/selectableItemBackground"
+						android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:background="@drawable/ic_deaths"
-                    android:backgroundTint="@color/red" />
+					<ImageView
+							android:layout_width="25dp"
+							android:layout_height="25dp"
+							android:layout_gravity="center"
+							android:layout_marginTop="17dp"
+							android:layout_marginBottom="10dp"
+							android:background="@drawable/ic_deaths"
+							android:backgroundTint="@color/red" />
 
-                <TextView
-                    android:id="@+id/tv_deaths"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/bold"
-                    android:textAlignment="center"
-                    android:textColor="@color/red"
-                    android:textSize="16sp"
-                    android:text="@string/loading"/>
+					<TextView
+							android:id="@+id/tv_deaths"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:fontFamily="@font/bold"
+							android:text="@string/loading"
+							android:textAlignment="center"
+							android:textColor="@color/red"
+							android:textSize="16sp" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily="@font/bold"
-                    android:text="DEATHS"
-                    android:textAlignment="center"
-                    android:textColor="@color/gray"
-                    android:textSize="10sp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+					<TextView
+							android:id="@+id/tv_new_deaths"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:layout_marginBottom="2dp"
+							android:fontFamily="@font/regular"
+							android:text="@string/loading"
+							android:textAlignment="center"
+							android:textColor="@color/gray"
+							android:textSize="12sp" />
 
-    </LinearLayout>
+					<TextView
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:layout_marginTop="5dp"
+							android:fontFamily="@font/bold"
+							android:text="DEATHS"
+							android:textAlignment="center"
+							android:textColor="@color/gray"
+							android:textSize="10sp" />
+				</LinearLayout>
+			</com.google.android.material.card.MaterialCardView>
+		</LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
-        android:fontFamily="@font/bold"
-        android:text="Active Cases"
-        android:textColor="@color/dark"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-" />
+		<Spinner
+				android:id="@+id/sp_vistype"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="24dp"
+				android:layout_marginTop="32dp"
+				android:background="@null"
+				android:spinnerMode="dropdown"
+				android:textAlignment="textStart"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+		<com.google.android.material.card.MaterialCardView
+				android:id="@+id/cv_line"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:layout_marginStart="24dp"
+				android:layout_marginTop="32dp"
+				android:layout_marginEnd="24dp"
+				android:layout_marginBottom="200dp"
+				app:layout_constraintBottom_toBottomOf="parent"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@+id/sp_vistype"
+				app:strokeColor="@color/light_gray"
+				app:strokeWidth="1dp">
+
+			<FrameLayout
+					android:id="@+id/frameLayout"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:clipChildren="false"
+					tools:context=".MainActivity">
+
+				<com.yabu.livechart.view.LiveChart
+						android:id="@+id/line_chart"
+						android:layout_width="match_parent"
+						android:layout_height="250dp"
+						android:paddingBottom="1dp"/>
+			</FrameLayout>
+
+			<TextView
+					android:id="@+id/live_chart_date"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:fontFamily="@font/regular"
+					android:layout_marginLeft="2dp"
+					android:layout_marginTop="0dp"
+					android:drawablePadding="5dp"
+					android:drawableTint="@color/gray" />
+
+			<TextView
+					android:id="@+id/live_chart_daily"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:fontFamily="@font/regular"
+					android:layout_marginLeft="2dp"
+					android:layout_marginTop="18dp"
+					android:drawablePadding="5dp"
+					android:drawableTint="@color/gray" />
+
+			<TextView
+					android:id="@+id/live_chart_sum"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:fontFamily="@font/regular"
+					android:layout_marginLeft="2dp"
+					android:layout_marginTop="36dp"
+					android:drawablePadding="5dp"
+					android:drawableTint="@color/gray" />
+		</com.google.android.material.card.MaterialCardView>
+	</androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

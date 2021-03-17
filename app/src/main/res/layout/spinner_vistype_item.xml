@@ -2,7 +2,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:fontFamily="@font/bold"
-    android:textSize="35sp"
-    android:drawableRight="@drawable/ic_dropdown"
+    android:textSize="20sp"
+    android:drawableRight="@drawable/ic_dropdown_small"
     android:drawableTint="@color/gray"
     android:textColor="@color/dark" />

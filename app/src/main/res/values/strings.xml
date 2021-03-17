@@ -60,4 +60,9 @@
         <item>Wyoming</item>
     </string-array>
 
+    <string-array name="vistype">
+        <item>Show Infected</item>
+        <item>Show Vaccinated</item>
+        <item>Show Deaths</item>
+    </string-array>
 </resources>

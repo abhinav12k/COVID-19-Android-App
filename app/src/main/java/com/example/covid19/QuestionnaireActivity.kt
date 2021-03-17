@@ -14,7 +14,7 @@ class QuestionnaireActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        theme.applyStyle(R.style.Theme_settings, true)
+        theme.applyStyle(R.style.Theme_dark, true)
         setContentView(R.layout.activity_questionnaire)
 
         mainActivityButton = findViewById(R.id.back_from_questionnaire)
