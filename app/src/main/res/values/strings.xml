@@ -65,4 +65,6 @@
         <item>Show Vaccinated</item>
         <item>Show Deaths</item>
     </string-array>
+
+    <string name="mapbox_access_token">pk.eyJ1Ijoia2V2aW5jcmVzcGluIiwiYSI6ImNrbTdxcHVxNTBvMGgycHM5ZzR1Nnk0MDEifQ.exvJs9OORoadwrWYkTguBg</string>
 </resources>

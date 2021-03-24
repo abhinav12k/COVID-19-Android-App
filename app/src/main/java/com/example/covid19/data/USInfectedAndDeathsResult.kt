@@ -14,7 +14,7 @@ class USInfectedAndDeathsResult : ArrayList<USInfectedAndDeathsItem>() {
     }
 
     fun getDateUpdated(): Date {
-        return SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(this[this.size - 1].Date)
+        return SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US).parse(this[this.size - 1].Date)!!
     }
 
 }

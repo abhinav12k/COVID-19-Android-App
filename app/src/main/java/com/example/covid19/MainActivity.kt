@@ -17,6 +17,18 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
+import com.anychart.AnyChart
+import com.anychart.AnyChartView
+import com.anychart.chart.common.dataentry.DataEntry
+import com.anychart.chart.common.dataentry.ValueDataEntry
+import com.anychart.charts.Map
+import com.anychart.charts.Pie
+import com.anychart.core.map.series.Choropleth
+import com.anychart.core.ui.ColorRange
+import com.anychart.enums.SelectionMode
+import com.anychart.enums.SidePosition
+import com.anychart.graphics.vector.text.HAlign
+import com.anychart.scales.LinearColor
 import com.example.covid19.data.*
 import com.yabu.livechart.model.DataPoint
 import com.yabu.livechart.model.Dataset
@@ -29,12 +41,14 @@ import kotlin.math.roundToInt
 
 
 class MainActivity : AppCompatActivity() {
-
     // INITIALIZE VARIABLES
     private lateinit var questionnaireCardView: CardView
 
     private lateinit var statesSpinner : Spinner
-    private lateinit var vistypeSpinner : Spinner
+
+    private lateinit var infectedLinearLayout: LinearLayout
+    private lateinit var vaccinatedLinearLayout: LinearLayout
+    private lateinit var deathsLinearLayout: LinearLayout
 
     private lateinit var dateTextView : TextView
     private lateinit var settingsImageView : ImageView
@@ -52,15 +66,23 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var detailsLinkTextView : TextView
 
+    private lateinit var lineChartTextView : TextView
+
     private lateinit var lineChart : LiveChart
 
     private lateinit var lineChartDateTextView: TextView
     private lateinit var lineChartDailyTextView: TextView
     private lateinit var lineChartSumTextView: TextView
 
-    private var stateSelected = ""
-    private var visSelected = ""
+    private lateinit var mapAnyChartView: AnyChartView
 
+    private var visSelected = "INFECTED"
+    private var stateSelected = "US"
+    private var codeSelected = "US"
+
+    /**
+     * It does a lot of stuff, read comments.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         // SHOW LAYOUT
         super.onCreate(savedInstanceState)
@@ -71,7 +93,10 @@ class MainActivity : AppCompatActivity() {
         questionnaireCardView = findViewById(R.id.cv_questionnaire_button)
 
         statesSpinner = findViewById(R.id.sp_states)
-        vistypeSpinner = findViewById(R.id.sp_vistype)
+
+        infectedLinearLayout = findViewById(R.id.cv_infected)
+        vaccinatedLinearLayout = findViewById(R.id.cv_vaccinated)
+        deathsLinearLayout = findViewById(R.id.cv_deaths)
 
         dateTextView = findViewById(R.id.tv_date)
         settingsImageView = findViewById(R.id.iv_settings)
@@ -89,102 +114,165 @@ class MainActivity : AppCompatActivity() {
 
         detailsLinkTextView = findViewById(R.id.tv_details)
 
+        lineChartTextView = findViewById(R.id.tv_vistype)
+
         lineChart = findViewById(R.id.line_chart)
         lineChartDateTextView = findViewById(R.id.live_chart_date)
-        lineChartDailyTextView = findViewById(R.id.live_chart_daily)
         lineChartSumTextView = findViewById(R.id.live_chart_sum)
+        lineChartDailyTextView = findViewById(R.id.live_chart_daily)
 
-        // ACCESS SHARED PREFERENCES
+        mapAnyChartView = findViewById(R.id.map)
+
+        // ACCESS PHONE'S SHARED PREFERENCES
         val sharedPreferences = getSharedPreferences("COVID_19", Context.MODE_PRIVATE);
 
-        // TODAY'S DATE
+        // SET TODAY'S DATE TEXT
         val calendar = Calendar.getInstance()
-        val date = SimpleDateFormat("EEEE, MMM d, yyyy").format(calendar.time)
+        val date = SimpleDateFormat("EEEE, MMM d, yyyy", Locale.US).format(calendar.time)
         dateTextView.text = date
 
         // SPINNER AND SPINNER ITEM STYLING AND DECLARATION
         // STATES SPINNER
         val statesSpinnerAdapter: ArrayAdapter<*> = ArrayAdapter.createFromResource(
-                this,
-                R.array.states, R.layout.spinner_states_item
+            this,
+            R.array.states, R.layout.spinner_states_item
         )
         statesSpinnerAdapter.setDropDownViewResource(R.layout.spinner_states_dropdown_item)
         statesSpinner.adapter = statesSpinnerAdapter
 
-        // VISUALIZATION TYPE SPINNER
-        val vistypeSpinnerAdapter: ArrayAdapter<*> = ArrayAdapter.createFromResource(
-                this,
-                R.array.vistype, R.layout.spinner_vistype_item
-        )
-        vistypeSpinnerAdapter.setDropDownViewResource(R.layout.spinner_vistype_dropdown_item)
-        vistypeSpinner.adapter = vistypeSpinnerAdapter
-
         // STATE SPINNER LISTENER
         statesSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
-                    adapterView: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
+                adapterView: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
             ) {
                 // GET SELECTED STATE
-                val selected = adapterView?.getItemAtPosition(position).toString().toUpperCase()
+                val selected = adapterView?.getItemAtPosition(position).toString().toUpperCase(
+                    Locale.ROOT
+                )
 
-                // SET GLOBAL STATE SELECTED
+                // UPDATE GLOBAL VARIABLES
                 stateSelected = selected
+                codeSelected = States().getStatesMap()[adapterView?.getItemAtPosition(position)].toString()
 
-                setLineChart(lineChart, sharedPreferences, visSelected, stateSelected)
+                // INITIALIZE STRINGS
+                val selectedFormatted: String
 
                 if (selected != "ALL STATES") {
-                    val selectedFormatted = selected.replace("\\s".toRegex(), "")
-                    latestUpdateTitleTextView.text = "${States().getStatesMap()[adapterView?.getItemAtPosition(position).toString()]} Cases Overview"
+                    // FORMAT SELECTED FROM "NEW YORK" TO "NEWYORK"
+                    selectedFormatted = selected.replace(" ", "")
 
-                    latestUpdateTextView.text = sharedPreferences.getString("${selectedFormatted}_UPDATED", "Unknown")
+                    // SET TOTAL NUMBERS TEXT
+                    latestUpdateTextView.text = sharedPreferences.getString(
+                        "${selectedFormatted}_UPDATED",
+                        "Unknown"
+                    )
+                    infectedTextView.text = sharedPreferences.getString(
+                        "${selectedFormatted}_INFECTED",
+                        "Unknown"
+                    )
+                    vaccinatedTextView.text = sharedPreferences.getString(
+                        "${selectedFormatted}_VACCINATED",
+                        "Unknown"
+                    )
+                    deathsTextView.text = sharedPreferences.getString(
+                        "${selectedFormatted}_DEATHS",
+                        "Unknown"
+                    )
 
-                    infectedTextView.text = sharedPreferences.getString("${selectedFormatted}_INFECTED", "Unknown")
-                    vaccinatedTextView.text = sharedPreferences.getString("${selectedFormatted}_VACCINATED", "Unknown")
-                    deathsTextView.text = sharedPreferences.getString("${selectedFormatted}_DEATHS", "Unknown")
+                    // GET NEW NUMBERS
+                    val newInfected = sharedPreferences.getString(
+                        "${selectedFormatted}_NEW_INFECTED",
+                        "0"
+                    )
+                    val newVaccinated = sharedPreferences.getString(
+                        "${selectedFormatted}_NEW_VACCINATED",
+                        "0"
+                    )
+                    val newDeaths = sharedPreferences.getString(
+                        "${selectedFormatted}_NEW_DEATHS",
+                        "0"
+                    )
 
-                    val newInfected = sharedPreferences.getString("${selectedFormatted}_NEW_INFECTED", "0")
-                    val newVaccinated = sharedPreferences.getString("${selectedFormatted}_NEW_VACCINATED", "0")
-                    val newDeaths = sharedPreferences.getString("${selectedFormatted}_NEW_DEATHS", "0")
-
+                    // FORMAT NEW NUMBERS
                     val formattedNewInfected = if (newInfected!!.replace(",", "").toInt() <= 0) "No Changes" else "+ $newInfected"
                     val formattedNewVaccinated = if (newVaccinated!!.replace(",", "").toInt() <= 0) "No Changes" else "+ $newVaccinated"
                     val formattedNewDeaths = if (newDeaths!!.replace(",", "").toInt() <= 0) "No Changes" else "+ $newDeaths"
 
+                    // SET NEW NUMBERS TEXT
                     newInfectedTextView.text = formattedNewInfected
                     newVaccinatedTextView.text = formattedNewVaccinated
                     newDeathsTextView.text = formattedNewDeaths
                 } else {
-                    latestUpdateTitleTextView.text = "US Cases Overview"
+                    // UPDATE GLOBAL VARIABLES
+                    codeSelected = "US"
+
+                    // SET U.S DATA
                     setDefaultData(sharedPreferences)
                 }
+
+                // SET SUB-TITLES TEXT
+                val lineChartText ="$codeSelected ${visSelected.toLowerCase(Locale.ROOT).capitalize(
+                    Locale.ROOT
+                )}"
+                val latestUpdateTileText = "$codeSelected Cases Overview"
+                lineChartTextView.text = lineChartText
+                latestUpdateTitleTextView.text = latestUpdateTileText
+
+                // DRAW LINE CHART
+                setLineChart(lineChart, sharedPreferences, stateSelected)
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 // IGNORE: THERE IS ALWAYS AN ELEMENT SELECTED
             }
         }
 
-        // VISUALIZATION TYPE SPINNER LISTENER
-        vistypeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                    adapterView: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-            ) {
-                // GET SELECTED VISUALIZATION TYPE
-                val selected = adapterView?.getItemAtPosition(position).toString()
+        // INFECTED CARD LISTENER
+        infectedLinearLayout.setOnClickListener(View.OnClickListener {
+            // SET GLOBAL VARIABLE
+            visSelected = "INFECTED"
+            // SET SUB-TITLE TEXT
+            val lineChartText = "$codeSelected ${
+                visSelected.toLowerCase(Locale.ROOT).capitalize(
+                    Locale.ROOT
+                )
+            }"
+            lineChartTextView.text = lineChartText
+            // DRAW LINE CHART
+            setLineChart(lineChart, sharedPreferences, stateSelected)
+        })
 
-                visSelected = selected
+        // VACCINATED CARD LISTENER
+        vaccinatedLinearLayout.setOnClickListener(View.OnClickListener {
+            // SET GLOBAL VARIABLE
+            visSelected = "VACCINATED"
+            // SET SUB-TITLE TEXT
+            val lineChartText = "$codeSelected ${
+                visSelected.toLowerCase(Locale.ROOT).capitalize(
+                    Locale.ROOT
+                )
+            }"
+            lineChartTextView.text = lineChartText
+            // DRAW LINE CHART
+            setLineChart(lineChart, sharedPreferences, stateSelected)
+        })
 
-                setLineChart(lineChart, sharedPreferences, visSelected, stateSelected)
-            }
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                // IGNORE: THERE IS ALWAYS AN ELEMENT SELECTED
-            }
-        }
+        // DEATHS CARD LISTENER
+        deathsLinearLayout.setOnClickListener(View.OnClickListener {
+            // SET GLOBAL VARIABLE
+            visSelected = "DEATHS"
+            // SET SUB-TITLE TEXT
+            val lineChartText = "$codeSelected ${
+                visSelected.toLowerCase(Locale.ROOT).capitalize(
+                    Locale.ROOT
+                )
+            }"
+            lineChartTextView.text = lineChartText
+            // DRAW LINE CHART
+            setLineChart(lineChart, sharedPreferences, stateSelected)
+        })
 
         // SETTINGS LINK
         settingsImageView.setOnClickListener(View.OnClickListener {
@@ -206,7 +294,10 @@ class MainActivity : AppCompatActivity() {
 
         // DETAILS LINK
         // REMOVE UNDERLINE FROM HYPERTEXT
-        val s = HtmlCompat.fromHtml("<a href='https://covid.cdc.gov/covid-data-tracker/#datatracker-home'>Details</a>", HtmlCompat.FROM_HTML_MODE_LEGACY) as Spannable
+        val s = HtmlCompat.fromHtml(
+            "<a href='https://covid.cdc.gov/covid-data-tracker/#datatracker-home'>Details</a>",
+            HtmlCompat.FROM_HTML_MODE_LEGACY
+        ) as Spannable
         for (u in s.getSpans(0, s.length, URLSpan::class.java)) {
             s.setSpan(object : UnderlineSpan() {
                 override fun updateDrawState(tp: TextPaint) {
@@ -215,7 +306,7 @@ class MainActivity : AppCompatActivity() {
             }, s.getSpanStart(u), s.getSpanEnd(u), 0)
         }
         detailsLinkTextView.text = s
-        // OPEN LINK
+        // OPEN CDC HYPER-LINK
         detailsLinkTextView.movementMethod = LinkMovementMethod.getInstance()
 
         // REMOVE TITLE BAR
@@ -224,138 +315,225 @@ class MainActivity : AppCompatActivity() {
 
         // SUPPRESS DARK MODE
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
+        setChart()
     }
 
-    private fun setDefaultData(sharedPreferences : SharedPreferences) {
-        latestUpdateTextView.text = sharedPreferences.getString("US_UPDATED", "Unknown")
+    private fun setChart() {
+        val pie : Pie = AnyChart.pie()
+        val data = arrayListOf<DataEntry>()
 
+        data.add(ValueDataEntry("A", 100))
+        data.add(ValueDataEntry("B", 120))
+        data.add(ValueDataEntry("C", 180))
+
+        pie.data(data)
+        mapAnyChartView.setChart(pie)
+    }
+
+
+    /**
+     * Sets the text for various TextViews with U.S COVID-19 data based on what's found on [sharedPreferences].
+     */
+    private fun setDefaultData(sharedPreferences: SharedPreferences) {
+        // SET TOTAL NUMBERS
+        latestUpdateTextView.text = sharedPreferences.getString("US_UPDATED", "Unknown")
         infectedTextView.text = sharedPreferences.getString("US_INFECTED", "Unknown")
         vaccinatedTextView.text = sharedPreferences.getString("US_VACCINATED", "Unknown")
         deathsTextView.text = sharedPreferences.getString("US_DEATHS", "Unknown")
 
-        newInfectedTextView.text = "+ ${sharedPreferences.getString("US_NEW_INFECTED", "Unknown")}"
-        newVaccinatedTextView.text = "+ ${sharedPreferences.getString("US_NEW_VACCINATED", "Unknown")}"
-        newDeathsTextView.text = "+ ${sharedPreferences.getString("US_NEW_DEATHS", "Unknown")}"
+        // SET NEW NUMBERS
+        val newInfected = "+ ${sharedPreferences.getString("US_NEW_INFECTED", "Unknown")}"
+        val newVaccinated = "+ ${sharedPreferences.getString("US_NEW_VACCINATED", "Unknown")}"
+        val newDeaths = "+ ${sharedPreferences.getString("US_NEW_DEATHS", "Unknown")}"
+
+        newInfectedTextView.text = newInfected
+        newVaccinatedTextView.text = newVaccinated
+        newDeathsTextView.text = newDeaths
     }
 
-    private fun setLineChart(liveChart: LiveChart, sharedPreferences: SharedPreferences, selected: String, stateSelected: String) {
-        val visType : String = when (selected) {
-            "Show Infected" -> "INFECTED"
-            "Show Vaccinated" -> "VACCINATED"
-            else -> "DEATHS"
-        }
+    /**
+     * Draws the [liveChart] based on the Global variable [visSelected] visualization and the [stateSelected] by retrieving COVID-19 data from the phone's [sharedPreferences].
+     */
+    private fun setLineChart(
+        liveChart: LiveChart,
+        sharedPreferences: SharedPreferences,
+        stateSelected: String
+    ) {
+        // INITIALIZE EMPTY MUTABLE LISTS TO STORE DATA POINTS AND DATES
+        val dateRecorded : MutableList<String> = mutableListOf()
+        val cumulativeRecorded : MutableList<DataPoint> = mutableListOf()
+        val recorded : MutableList<DataPoint> = mutableListOf()
 
+        // FORMAT SELECTED STATE FROM "NEW YORK" to "NEWYORK" or "ALL STATES" to "US"
         val state : String = when (stateSelected) {
             "ALL STATES" -> "US"
-            else -> stateSelected.replace("\\s".toRegex(), "")
+            else -> stateSelected.replace(" ".toRegex(), "")
         }
 
         // GET SIZE OF LIST
-        val listSize = sharedPreferences.getInt("${state}_${visType}_LIST_SIZE", 0)
+        val listSize = sharedPreferences.getInt("${state}_${visSelected}_LIST_SIZE", 0)
 
-        // INITIALIZE EMPTY MUTABLE LIST
-        val infectedCumulative : MutableList<DataPoint> = mutableListOf()
-        val infected : MutableList<DataPoint> = mutableListOf()
-        val date : MutableList<String> = mutableListOf()
+        // ADD DATA FOUND IN SHARED PREFERENCES TO MUTABLE LISTS
+        // SKIP FIRST DATA POINT IN INFECTED AND DEATHS SINCE IT SHOWS NUMBERS UNTIL THE FIRST DATA API STARTED RECORDING NUMBERS
+        if (visSelected != "VACCINATED") {
+            for (i in 1 until listSize) {
+                dateRecorded.add(
+                    sharedPreferences.getString(
+                        "${state}_${visSelected}_LIST_DATE_$i",
+                        "No Date"
+                    )!!
+                )
 
-        // ADD DATA POINTS
-        for (i in 0 until listSize) {
-            var sum = sharedPreferences.getString("${state}_${visType}_LIST_SUM_$i", "0")!!.toFloat()
-            if (sum < 0) {
-                sum = 0f
+                // REMOVE NEGATIVE NUMBERS
+                val nonNegativeRecorded =
+                    if (sharedPreferences.getString("${state}_${visSelected}_LIST_$i", "0")!!.toFloat() >= 0f)
+                        sharedPreferences.getString("${state}_${visSelected}_LIST_$i", "0")!!.toFloat() else 0f
+
+                cumulativeRecorded.add(
+                    DataPoint(
+                        i.toFloat(), sharedPreferences.getString(
+                            "${state}_${visSelected}_LIST_SUM_$i",
+                            "0"
+                        )!!.toFloat()
+                    )
+                )
+                recorded.add(DataPoint(i.toFloat(), nonNegativeRecorded))
             }
-
-            var value = (sharedPreferences.getString("${state}_${visType}_LIST_$i", "0")!!.toInt()).toFloat() * 70
-            if (value < 0) {
-                value = 0f
+        } else {
+            for (i in 0 until listSize) {
+                dateRecorded.add(
+                    sharedPreferences.getString(
+                        "${state}_${visSelected}_LIST_DATE_$i",
+                        "No Date"
+                    )!!
+                )
+                cumulativeRecorded.add(
+                    DataPoint(
+                        i.toFloat(), sharedPreferences.getString(
+                            "${state}_${visSelected}_LIST_SUM_$i",
+                            "0"
+                        )!!.toFloat()
+                    )
+                )
+                recorded.add(
+                    DataPoint(
+                        i.toFloat(), sharedPreferences.getString(
+                            "${state}_${visSelected}_LIST_$i",
+                            "0"
+                        )!!.toFloat()
+                    )
+                )
             }
-
-            infectedCumulative.add(DataPoint(i.toFloat(), sum))
-            infected.add(DataPoint(i.toFloat(), value)) // EXAGGERATE VALUE FOR BETTER GRAPH VISIBILITY
-            date.add(sharedPreferences.getString("${state}_${visType}_LIST_DATE_$i", "No Date")!!)
         }
 
-        val mainDataSet = Dataset(infected)
+
+        // INITIALIZE DATA SET
+        val mainDataSet = Dataset(recorded)
+
+        // DRAW LINE CHART
         liveChart
-            .setDataset(mainDataSet)
-            .setLiveChartStyle(getLineStyle(selected, state))
-            .drawLastPointLabel()
+            .setDataset(mainDataSet) // WITH DATA SET
+            .setLiveChartStyle(getLineStyle()) //WITH STYLE
             .setOnTouchCallbackListener(object : LiveChart.OnTouchCallback {
+                /**
+                 * Sets the text inside the [liveChart] with matching from the line based on what's found on [sharedPreferences] when touching the [liveChart] by using [point].x as index.
+                 */
                 override fun onTouchCallback(point: DataPoint) {
+                    // CONVERT POINT.x FLOAT TO INT
                     val i = point.x.roundToInt()
 
-                    val date = sharedPreferences.getString("${state}_${visType}_LIST_DATE_$i", "No Date")!!.split("T")[0]
-                    var sum = sharedPreferences.getString("${state}_${visType}_LIST_SUM_$i", "No Data")!!.toInt()
-                    var daily = sharedPreferences.getString("${state}_${visType}_LIST_$i", "No Data")!!.toInt()
+                    // SET TEXTVIEW TEXT
+                    val lineChartDateText = "Date: ${
+                        sharedPreferences.getString(
+                            "${state}_${visSelected}_LIST_DATE_$i",
+                            "No Date"
+                        )!!.split("T")[0]
+                    }"
+                    val lineChartSumText = "Total ${visSelected.toLowerCase(Locale.ROOT)}: ${
+                        NumberFormat.getNumberInstance(
+                            Locale.US
+                        ).format(
+                            sharedPreferences.getString(
+                                "${state}_${visSelected}_LIST_SUM_$i",
+                                "0"
+                            )!!.toInt()
+                        )
+                    }"
+                    val lineChartDailyText = "${
+                        visSelected.toLowerCase(Locale.ROOT).capitalize(
+                            Locale.ROOT
+                        )
+                    }: ${
+                        NumberFormat.getNumberInstance(Locale.US).format(
+                            sharedPreferences.getString(
+                                "${state}_${visSelected}_LIST_$i",
+                                "0"
+                            )!!.toInt()
+                        )
+                    }"
 
-                    if (sum < 0) {
-                        sum = 0
-                    }
+                    lineChartDateTextView.text = lineChartDateText
+                    lineChartSumTextView.text = lineChartSumText
+                    lineChartDailyTextView.text = lineChartDailyText
 
-                    if (daily < 0) {
-                        daily = 0
-                    }
-
-                    lineChartDateTextView.text = "Date: $date"
-                    lineChartDailyTextView.text = "${visType.toLowerCase().capitalize()}: ${NumberFormat.getNumberInstance(Locale.US).format(daily)}"
-                    lineChartSumTextView.text = "Total ${visType.toLowerCase()}: ${NumberFormat.getNumberInstance(Locale.US).format(sum)}"
-
+                    // SET TEXTVIEW BACKGROUND COLOR
                     lineChartDateTextView.setBackgroundColor(Color.WHITE)
-                    lineChartDailyTextView.setBackgroundColor(Color.WHITE)
                     lineChartSumTextView.setBackgroundColor(Color.WHITE)
+                    lineChartDailyTextView.setBackgroundColor(Color.WHITE)
 
                     liveChart.parent.requestDisallowInterceptTouchEvent(true)
                 }
-                override fun onTouchFinished() {
-                    lineChartDateTextView.text = ""
-                    lineChartDailyTextView.text = ""
-                    lineChartSumTextView.text = ""
 
+                /**
+                 * Empties the [liveChart] TextViews when finished touching the [liveChart].
+                 */
+                override fun onTouchFinished() {
+                    // SET TEXTVIEW TEXT
+                    lineChartDateTextView.text = ""
+                    lineChartSumTextView.text = ""
+                    lineChartDailyTextView.text = ""
+
+                    // SET TEXTVIEW BACKGROUND COLOR
                     lineChartDateTextView.setBackgroundColor(Color.TRANSPARENT)
-                    lineChartDailyTextView.setBackgroundColor(Color.TRANSPARENT)
                     lineChartSumTextView.setBackgroundColor(Color.TRANSPARENT)
+                    lineChartDailyTextView.setBackgroundColor(Color.TRANSPARENT)
+
                     liveChart.parent.requestDisallowInterceptTouchEvent(false)
                 }
             })
+            .drawLastPointLabel()
+            .drawBaseline()
+            .setBaselineManually(recorded[recorded.size - 1].y)
             .drawSmoothPath()
             .drawDataset()
-
-        lineChartDateTextView.text = ""
-        lineChartDailyTextView.text = ""
-        lineChartSumTextView.text = ""
     }
 
-    private fun getLineStyle(visType: String, state : String): LiveChartStyle {
+    /**
+     * Returns a LiveChartStyle based on the GLOBAL VARIABLE [visSelected]
+     */
+    private fun getLineStyle(): LiveChartStyle {
         return LiveChartStyle().apply {
-
-            val color : Int = when (visType) {
-                "Show Infected" -> {
+            // COLORS
+            mainColor = when (visSelected) {
+                "INFECTED" -> {
                     ContextCompat.getColor(this@MainActivity, R.color.orange);
                 }
-                "Show Vaccinated" -> {
+                "VACCINATED" -> {
                     ContextCompat.getColor(this@MainActivity, R.color.green);
                 }
                 else -> {
                     ContextCompat.getColor(this@MainActivity, R.color.red);
                 }
             }
+            overlayLineColor = ContextCompat.getColor(this@MainActivity, R.color.light_gray2)
+            overlayCircleColor = ContextCompat.getColor(this@MainActivity, R.color.gray)
+            baselineColor = ContextCompat.getColor(this@MainActivity, R.color.light_gray2)
 
-            secondColor = ContextCompat.getColor(this@MainActivity, R.color.gray);
-            mainColor = color
-
-            if (state == "US") {
-                pathStrokeWidth = 2.5f
-                secondPathStrokeWidth = 5f
-            }
-            else {
-
-                pathStrokeWidth = 5f
-                mainFillColor = color
-            }
-
-            overlayLineColor = ContextCompat.getColor(this@MainActivity, R.color.light_gray2);
-            overlayCircleDiameter = 20f
-            overlayCircleColor = ContextCompat.getColor(this@MainActivity, R.color.gray);
+            // WIDTH AND CIRCLE DIAMETER
+            pathStrokeWidth = 4f
+            baselineStrokeWidth = 4f
+            overlayCircleDiameter = 10f
         }
     }
 }

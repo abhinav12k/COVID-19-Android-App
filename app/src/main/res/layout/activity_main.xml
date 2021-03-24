@@ -56,7 +56,7 @@
 				android:layout_height="30dp"
 				android:layout_marginTop="24dp"
 				android:layout_marginEnd="24dp"
-				android:background="@drawable/ic_setings"
+				android:background="@drawable/ic_settings"
 				android:backgroundTint="@color/gray"
 				app:layout_constraintEnd_toEndOf="parent"
 				app:layout_constraintTop_toTopOf="parent" />
@@ -67,7 +67,7 @@
 				android:layout_height="wrap_content"
 				android:layout_gravity="center"
 				android:layout_marginStart="22dp"
-				android:layout_marginTop="48dp"
+				android:layout_marginTop="32dp"
 				app:cardBackgroundColor="@android:color/transparent"
 				app:cardCornerRadius="0dp"
 				app:cardElevation="100dp"
@@ -149,7 +149,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_marginStart="24dp"
-				android:layout_marginTop="48dp"
+				android:layout_marginTop="32dp"
 				android:fontFamily="@font/bold"
 				android:text="US Cases Overview"
 				android:textColor="@color/dark"
@@ -188,7 +188,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_marginStart="16dp"
-				android:layout_marginTop="32dp"
+				android:layout_marginTop="16dp"
 				android:layout_marginEnd="16dp"
 				android:orientation="horizontal"
 				app:layout_constraintEnd_toEndOf="parent"
@@ -207,6 +207,7 @@
 					app:strokeWidth="1dp">
 
 				<LinearLayout
+						android:id="@+id/cv_infected"
 						android:layout_width="match_parent"
 						android:layout_height="match_parent"
 						android:clickable="true"
@@ -267,6 +268,7 @@
 					app:strokeWidth="1dp">
 
 				<LinearLayout
+						android:id="@+id/cv_vaccinated"
 						android:layout_width="match_parent"
 						android:layout_height="match_parent"
 						android:clickable="true"
@@ -291,6 +293,7 @@
 							android:textAlignment="center"
 							android:textColor="@color/green"
 							android:textSize="16sp" />
+
 					<TextView
 							android:id="@+id/tv_new_vaccinated"
 							android:layout_width="match_parent"
@@ -326,6 +329,7 @@
 					app:strokeWidth="1dp">
 
 				<LinearLayout
+						android:id="@+id/cv_deaths"
 						android:layout_width="match_parent"
 						android:layout_height="match_parent"
 						android:clickable="true"
@@ -375,15 +379,16 @@
 			</com.google.android.material.card.MaterialCardView>
 		</LinearLayout>
 
-		<Spinner
-				android:id="@+id/sp_vistype"
+		<TextView
+				android:id="@+id/tv_vistype"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_marginStart="24dp"
-				android:layout_marginTop="32dp"
-				android:background="@null"
-				android:spinnerMode="dropdown"
-				android:textAlignment="textStart"
+				android:layout_marginTop="16dp"
+				android:fontFamily="@font/bold"
+				android:text="US Infected"
+				android:textColor="@color/dark"
+				android:textSize="20sp"
 				app:layout_constraintStart_toStartOf="parent"
 				app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
@@ -392,13 +397,11 @@
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
 				android:layout_marginStart="24dp"
-				android:layout_marginTop="32dp"
+				android:layout_marginTop="16dp"
 				android:layout_marginEnd="24dp"
-				android:layout_marginBottom="200dp"
-				app:layout_constraintBottom_toBottomOf="parent"
 				app:layout_constraintEnd_toEndOf="parent"
 				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toBottomOf="@+id/sp_vistype"
+				app:layout_constraintTop_toBottomOf="@+id/tv_vistype"
 				app:strokeColor="@color/light_gray"
 				app:strokeWidth="1dp">
 
@@ -413,38 +416,54 @@
 						android:id="@+id/line_chart"
 						android:layout_width="match_parent"
 						android:layout_height="250dp"
-						android:paddingBottom="1dp"/>
+						android:paddingBottom="1dp" >
+				</com.yabu.livechart.view.LiveChart>
 			</FrameLayout>
 
 			<TextView
 					android:id="@+id/live_chart_date"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:fontFamily="@font/regular"
 					android:layout_marginLeft="2dp"
 					android:layout_marginTop="0dp"
-					android:drawablePadding="5dp"
-					android:drawableTint="@color/gray" />
-
-			<TextView
-					android:id="@+id/live_chart_daily"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:fontFamily="@font/regular"
-					android:layout_marginLeft="2dp"
-					android:layout_marginTop="18dp"
-					android:drawablePadding="5dp"
-					android:drawableTint="@color/gray" />
+					android:fontFamily="@font/regular" />
 
 			<TextView
 					android:id="@+id/live_chart_sum"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:fontFamily="@font/regular"
+					android:layout_marginLeft="2dp"
+					android:layout_marginTop="18dp"
+					android:fontFamily="@font/regular" />
+
+			<TextView
+					android:id="@+id/live_chart_daily"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
 					android:layout_marginLeft="2dp"
 					android:layout_marginTop="36dp"
-					android:drawablePadding="5dp"
-					android:drawableTint="@color/gray" />
+					android:fontFamily="@font/regular" />
+		</com.google.android.material.card.MaterialCardView>
+
+		<com.google.android.material.card.MaterialCardView
+				android:id="@+id/map_card"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:layout_marginStart="24dp"
+				android:layout_marginTop="32dp"
+				android:layout_marginEnd="24dp"
+				android:layout_marginBottom="60dp"
+				app:layout_constraintBottom_toBottomOf="parent"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@+id/cv_line"
+				app:strokeColor="@color/light_gray"
+				app:strokeWidth="1dp">
+
+			<com.anychart.AnyChartView
+					android:id="@+id/map"
+					android:layout_width="match_parent"
+					android:layout_height="250dp" />
 		</com.google.android.material.card.MaterialCardView>
 	</androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
