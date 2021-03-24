@@ -98,7 +98,7 @@
 							android:layout_height="64dp"
 							android:layout_gravity="bottom"
 							android:contentDescription="@string/blank"
-							android:src="@drawable/cv_virus_corner" />
+							android:src="@drawable/ic_virus_corner" />
 
 					<LinearLayout
 							android:layout_width="wrap_content"
