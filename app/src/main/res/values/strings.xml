@@ -1,70 +1,31 @@
 <resources>
+    <!-- PROJECT -->
     <string name="blank" />
     <string name="app_name">COVID-19</string>
+    <string name="loading">Loading...</string>
+
+    <!-- MAIN ACTIVITY LAYOUT -->
+    <string name="outbreak">Current outbreak</string>
     <string name="card_text_2">Discover your risk of serious hospitalization due COVID-19 infection.</string>
     <string name="card_text_1">My Hospitalization Risk</string>
     <string name="cdc_link"><a href="https://covid.cdc.gov/covid-data-tracker/#datatracker-home">Details</a></string>
-    <string name="loading">Loading...</string>
+    <string name="settings">Settings Buttom</string>
+    <string name="overview">US Cases Overview</string>
+    <string name="infected">INFECTED</string>
+    <string name="vaccinated">VACCINATED</string>
+    <string name="deaths">DEATHS</string>
+    <string name="line_chart">US Infected Line Chart</string>
+    <string name="line_chart_subtitle">Data from 1/27/2020 to 4/1/2021</string>
 
-    <string-array name="states">
-        <item>All States</item>
-        <item>Alaska</item>
-        <item>Alabama</item>
-        <item>Arkansas</item>
-        <item>Arizona</item>
-        <item>California</item>
-        <item>Colorado</item>
-        <item>Connecticut</item>
-        <item>Delaware</item>
-        <item>Florida</item>
-        <item>Georgia</item>
-        <item>Hawaii</item>
-        <item>Iowa</item>
-        <item>Idaho</item>
-        <item>Illinois</item>
-        <item>Indiana</item>
-        <item>Kansas</item>
-        <item>Kentucky</item>
-        <item>Louisiana</item>
-        <item>Massachusetts</item>
-        <item>Maryland</item>
-        <item>Maine</item>
-        <item>Michigan</item>
-        <item>Minnesota</item>
-        <item>Missouri</item>
-        <item>Mississippi</item>
-        <item>Montana</item>
-        <item>North Carolina</item>
-        <item>North Dakota</item>
-        <item>Nebraska</item>
-        <item>New Hampshire</item>
-        <item>New Jersey</item>
-        <item>New Mexico</item>
-        <item>Nevada</item>
-        <item>New York</item>
-        <item>Ohio</item>
-        <item>Oklahoma</item>
-        <item>Oregon</item>
-        <item>Pennsylvania</item>
-        <item>Rhode Island</item>
-        <item>South Carolina</item>
-        <item>South Dakota</item>
-        <item>Tennessee</item>
-        <item>Texas</item>
-        <item>Utah</item>
-        <item>Virginia</item>
-        <item>Vermont</item>
-        <item>Washington</item>
-        <item>Wisconsin</item>
-        <item>West Virginia</item>
-        <item>Wyoming</item>
-    </string-array>
-
-    <string-array name="vistype">
-        <item>Show Infected</item>
-        <item>Show Vaccinated</item>
-        <item>Show Deaths</item>
-    </string-array>
-
-    <string name="mapbox_access_token">pk.eyJ1Ijoia2V2aW5jcmVzcGluIiwiYSI6ImNrbTdxcHVxNTBvMGgycHM5ZzR1Nnk0MDEifQ.exvJs9OORoadwrWYkTguBg</string>
+    <!-- QUESTIONNAIRE ACTIVITY LAYOUT -->
+    <string name="risk">My Hospitalization Risk</string>
+    <string name="questions">Questions</string>
+    <string name="process">1</string>
+    <string name="out_of">/3</string>
+    <string name="hash_tags">#covid-19 #hospitalizationrisk</string>
+    <string name="q1">Have you experienced any of the following symptoms:</string>
+    <string name="d1">Fever, Cough, Sneezing, Sore Throat, Difficulty in Breathing.</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="us_infected_map">US Infected Map</string>
 </resources>

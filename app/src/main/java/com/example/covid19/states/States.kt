@@ -1,11 +1,11 @@
-package com.example.covid19.data
+package com.example.covid19.states
 
 class States {
 
     fun getStatesMap(): Map<String, String> {
         return mapOf(
-                "Alaska" to "AK",
                 "Alabama" to "AL",
+                "Alaska" to "AK",
                 "Arkansas" to "AR",
                 "Arizona" to "AZ",
                 "California" to "CA",

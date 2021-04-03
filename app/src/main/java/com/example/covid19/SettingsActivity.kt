@@ -12,12 +12,15 @@ class SettingsActivity : AppCompatActivity() {
     lateinit var mainActivityButton : ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Show layout
         super.onCreate(savedInstanceState)
         setTheme(R.style.Theme_white)
         setContentView(R.layout.activity_settings)
 
+        // Get layout components
         mainActivityButton = findViewById(R.id.back_from_settings)
 
+        // Main activity button listener
         mainActivityButton.setOnClickListener(View.OnClickListener {
             onBackPressed()
         })
@@ -33,7 +36,6 @@ class SettingsActivity : AppCompatActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         startActivity(Intent(this, MainActivity::class.java))
-        this.overridePendingTransition(0, 0);
         this.finish()
     }
 }

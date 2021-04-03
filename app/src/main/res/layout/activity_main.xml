@@ -8,7 +8,7 @@
 
 	<androidx.constraintlayout.widget.ConstraintLayout
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
+			android:layout_height="wrap_content"
 			tools:context=".MainActivity">
 
 		<TextView
@@ -19,7 +19,7 @@
 				android:layout_marginTop="24dp"
 				android:fontFamily="@font/bold"
 				android:letterSpacing="0.03"
-				android:text="Current outbreak"
+				android:text="@string/outbreak"
 				android:textColor="@color/dark"
 				android:textSize="17sp"
 				app:layout_constraintStart_toStartOf="parent"
@@ -58,6 +58,7 @@
 				android:layout_marginEnd="24dp"
 				android:background="@drawable/ic_settings"
 				android:backgroundTint="@color/gray"
+				android:contentDescription="@string/blank"
 				app:layout_constraintEnd_toEndOf="parent"
 				app:layout_constraintTop_toTopOf="parent" />
 
@@ -116,7 +117,8 @@
 								android:paddingBottom="15dp"
 								android:text="@string/card_text_1"
 								android:textColor="@color/white"
-								android:textSize="18sp" />
+								android:textSize="18sp"
+								tools:ignore="RtlSymmetry" />
 
 						<TextView
 								android:layout_width="wrap_content"
@@ -129,7 +131,8 @@
 								android:text="@string/card_text_2"
 								android:textAlignment="textStart"
 								android:textColor="@color/white"
-								android:textSize="13sp" />
+								android:textSize="13sp"
+								tools:ignore="RtlSymmetry" />
 					</LinearLayout>
 
 					<TextView
@@ -139,7 +142,8 @@
 							android:gravity="center"
 							android:paddingStart="20dp"
 							app:drawableStartCompat="@drawable/ic_arrow"
-							app:drawableTint="@color/white" />
+							app:drawableTint="@color/white"
+							tools:ignore="RtlSymmetry" />
 				</LinearLayout>
 			</androidx.cardview.widget.CardView>
 		</androidx.cardview.widget.CardView>
@@ -151,7 +155,7 @@
 				android:layout_marginStart="24dp"
 				android:layout_marginTop="32dp"
 				android:fontFamily="@font/bold"
-				android:text="US Cases Overview"
+				android:text="@string/overview"
 				android:textColor="@color/dark"
 				android:textSize="20sp"
 				app:layout_constraintStart_toStartOf="parent"
@@ -163,10 +167,10 @@
 				android:layout_height="wrap_content"
 				android:layout_marginStart="24dp"
 				android:layout_marginTop="8dp"
-				android:drawableRight="@drawable/ic_check"
 				android:drawablePadding="5dp"
-				android:drawableTint="@color/gray"
 				android:text="@string/loading"
+				app:drawableRightCompat="@drawable/ic_check"
+				app:drawableTint="@color/gray"
 				app:layout_constraintStart_toStartOf="parent"
 				app:layout_constraintTop_toBottomOf="@+id/tv_latest_update_title" />
 
@@ -211,8 +215,10 @@
 						android:layout_width="match_parent"
 						android:layout_height="match_parent"
 						android:clickable="true"
+						android:focusable="true"
 						android:foreground="?android:attr/selectableItemBackground"
-						android:orientation="vertical">
+						android:orientation="vertical"
+						tools:ignore="UnusedAttribute">
 
 					<ImageView
 							android:layout_width="25dp"
@@ -221,7 +227,8 @@
 							android:layout_marginTop="17dp"
 							android:layout_marginBottom="10dp"
 							android:background="@drawable/ic_infected"
-							android:backgroundTint="@color/orange" />
+							android:backgroundTint="@color/orange"
+							android:contentDescription="@string/blank" />
 
 					<TextView
 							android:id="@+id/tv_infected"
@@ -249,10 +256,11 @@
 							android:layout_height="wrap_content"
 							android:layout_marginTop="5dp"
 							android:fontFamily="@font/bold"
-							android:text="INFECTED"
+							android:text="@string/infected"
 							android:textAlignment="center"
 							android:textColor="@color/gray"
-							android:textSize="10sp" />
+							android:textSize="10sp"
+							tools:ignore="SmallSp" />
 				</LinearLayout>
 			</com.google.android.material.card.MaterialCardView>
 
@@ -272,8 +280,10 @@
 						android:layout_width="match_parent"
 						android:layout_height="match_parent"
 						android:clickable="true"
+						android:focusable="true"
 						android:foreground="?android:attr/selectableItemBackground"
-						android:orientation="vertical">
+						android:orientation="vertical"
+						tools:ignore="UnusedAttribute">
 
 					<ImageView
 							android:layout_width="25dp"
@@ -282,7 +292,8 @@
 							android:layout_marginTop="17dp"
 							android:layout_marginBottom="10dp"
 							android:background="@drawable/ic_recovered"
-							android:backgroundTint="@color/green" />
+							android:backgroundTint="@color/green"
+							android:contentDescription="@string/blank" />
 
 					<TextView
 							android:id="@+id/tv_vaccinated"
@@ -310,10 +321,11 @@
 							android:layout_height="wrap_content"
 							android:layout_marginTop="5dp"
 							android:fontFamily="@font/bold"
-							android:text="VACCINATED"
+							android:text="@string/vaccinated"
 							android:textAlignment="center"
 							android:textColor="@color/gray"
-							android:textSize="10sp" />
+							android:textSize="10sp"
+							tools:ignore="SmallSp" />
 				</LinearLayout>
 			</com.google.android.material.card.MaterialCardView>
 
@@ -333,8 +345,10 @@
 						android:layout_width="match_parent"
 						android:layout_height="match_parent"
 						android:clickable="true"
+						android:focusable="true"
 						android:foreground="?android:attr/selectableItemBackground"
-						android:orientation="vertical">
+						android:orientation="vertical"
+						tools:ignore="UnusedAttribute">
 
 					<ImageView
 							android:layout_width="25dp"
@@ -343,7 +357,8 @@
 							android:layout_marginTop="17dp"
 							android:layout_marginBottom="10dp"
 							android:background="@drawable/ic_deaths"
-							android:backgroundTint="@color/red" />
+							android:backgroundTint="@color/red"
+							android:contentDescription="@string/blank" />
 
 					<TextView
 							android:id="@+id/tv_deaths"
@@ -371,24 +386,25 @@
 							android:layout_height="wrap_content"
 							android:layout_marginTop="5dp"
 							android:fontFamily="@font/bold"
-							android:text="DEATHS"
+							android:text="@string/deaths"
 							android:textAlignment="center"
 							android:textColor="@color/gray"
-							android:textSize="10sp" />
+							android:textSize="10sp"
+							tools:ignore="SmallSp" />
 				</LinearLayout>
 			</com.google.android.material.card.MaterialCardView>
 		</LinearLayout>
 
 		<TextView
-				android:id="@+id/tv_vistype"
+				android:id="@+id/tv_line_chart"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_marginStart="24dp"
 				android:layout_marginTop="16dp"
 				android:fontFamily="@font/bold"
-				android:text="US Infected"
+				android:text="@string/line_chart"
 				android:textColor="@color/dark"
-				android:textSize="20sp"
+				android:textSize="15sp"
 				app:layout_constraintStart_toStartOf="parent"
 				app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
@@ -397,11 +413,11 @@
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
 				android:layout_marginStart="24dp"
-				android:layout_marginTop="16dp"
+				android:layout_marginTop="8dp"
 				android:layout_marginEnd="24dp"
 				app:layout_constraintEnd_toEndOf="parent"
 				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toBottomOf="@+id/tv_vistype"
+				app:layout_constraintTop_toBottomOf="@+id/tv_line_chart"
 				app:strokeColor="@color/light_gray"
 				app:strokeWidth="1dp">
 
@@ -416,15 +432,14 @@
 						android:id="@+id/line_chart"
 						android:layout_width="match_parent"
 						android:layout_height="250dp"
-						android:paddingBottom="1dp" >
-				</com.yabu.livechart.view.LiveChart>
+						android:paddingBottom="1dp" />
 			</FrameLayout>
 
 			<TextView
 					android:id="@+id/live_chart_date"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_marginLeft="2dp"
+					android:layout_marginStart="2dp"
 					android:layout_marginTop="0dp"
 					android:fontFamily="@font/regular" />
 
@@ -432,7 +447,7 @@
 					android:id="@+id/live_chart_sum"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_marginLeft="2dp"
+					android:layout_marginStart="2dp"
 					android:layout_marginTop="18dp"
 					android:fontFamily="@font/regular" />
 
@@ -440,30 +455,61 @@
 					android:id="@+id/live_chart_daily"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_marginLeft="2dp"
+					android:layout_marginStart="2dp"
 					android:layout_marginTop="36dp"
 					android:fontFamily="@font/regular" />
 		</com.google.android.material.card.MaterialCardView>
+
+		<TextView
+				android:id="@+id/tv_choropleth"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="24dp"
+				android:layout_marginTop="16dp"
+				android:fontFamily="@font/bold"
+				android:text="@string/us_infected_map"
+				android:textColor="@color/dark"
+				android:textSize="15sp"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@+id/cv_line" />
+
 
 		<com.google.android.material.card.MaterialCardView
 				android:id="@+id/map_card"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
 				android:layout_marginStart="24dp"
-				android:layout_marginTop="32dp"
+				android:layout_marginTop="8dp"
 				android:layout_marginEnd="24dp"
 				android:layout_marginBottom="60dp"
 				app:layout_constraintBottom_toBottomOf="parent"
 				app:layout_constraintEnd_toEndOf="parent"
 				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toBottomOf="@+id/cv_line"
+				app:layout_constraintTop_toBottomOf="@+id/tv_choropleth"
 				app:strokeColor="@color/light_gray"
 				app:strokeWidth="1dp">
 
-			<com.anychart.AnyChartView
-					android:id="@+id/map"
+			<WebView
+					android:id="@+id/wv_d3"
 					android:layout_width="match_parent"
-					android:layout_height="250dp" />
+					android:layout_height="250dp"
+					android:layout_alignParentBottom="true" />
+
+			<TextView
+					android:id="@+id/tv_d3_state"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginStart="2dp"
+					android:layout_marginTop="0dp"
+					android:fontFamily="@font/regular" />
+
+			<TextView
+					android:id="@+id/tv_d3_total"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginStart="2dp"
+					android:layout_marginTop="18dp"
+					android:fontFamily="@font/regular" />
 		</com.google.android.material.card.MaterialCardView>
 	</androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
