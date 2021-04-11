@@ -1,31 +1,25 @@
 <resources>
     <!-- PROJECT -->
-    <string name="blank" />
+    <string name="blank" translatable="false" />
     <string name="app_name">COVID-19</string>
     <string name="loading">Loading...</string>
 
-    <!-- MAIN ACTIVITY LAYOUT -->
     <string name="outbreak">Current outbreak</string>
     <string name="card_text_2">Discover your risk of serious hospitalization due COVID-19 infection.</string>
     <string name="card_text_1">My Hospitalization Risk</string>
     <string name="cdc_link"><a href="https://covid.cdc.gov/covid-data-tracker/#datatracker-home">Details</a></string>
-    <string name="settings">Settings Buttom</string>
     <string name="overview">US Cases Overview</string>
     <string name="infected">INFECTED</string>
     <string name="vaccinated">VACCINATED</string>
     <string name="deaths">DEATHS</string>
     <string name="line_chart">US Infected Line Chart</string>
-    <string name="line_chart_subtitle">Data from 1/27/2020 to 4/1/2021</string>
-
-    <!-- QUESTIONNAIRE ACTIVITY LAYOUT -->
-    <string name="risk">My Hospitalization Risk</string>
     <string name="questions">Questions</string>
-    <string name="process">1</string>
-    <string name="out_of">/3</string>
+    <string name="process" translatable="false">1</string>
+    <string name="out_of" translatable="false">/3</string>
     <string name="hash_tags">#covid-19 #hospitalizationrisk</string>
     <string name="q1">Have you experienced any of the following symptoms:</string>
     <string name="d1">Fever, Cough, Sneezing, Sore Throat, Difficulty in Breathing.</string>
-    <string name="no">No</string>
-    <string name="yes">Yes</string>
+    <string name="no" translatable="false">No</string>
+    <string name="yes" translatable="false">Yes</string>
     <string name="us_infected_map">US Infected Map</string>
 </resources>

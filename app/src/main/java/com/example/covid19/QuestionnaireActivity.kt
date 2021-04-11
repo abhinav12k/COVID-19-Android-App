@@ -33,11 +33,14 @@ class QuestionnaireActivity : AppCompatActivity() {
 
         // Get layout components
         mainActivityButton = findViewById(R.id.btn_back_questionnaire)
+
         progressBar = findViewById(R.id.pb_progress)
         progressCurrentTextView = findViewById(R.id.tv_progress_current)
         progressTotalTextView = findViewById(R.id.tv_progress_total)
+
         questionTextview = findViewById(R.id.tv_question)
         descriptionTextView = findViewById(R.id.tv_description)
+
         noButton = findViewById(R.id.btn_no)
         yesButton = findViewById(R.id.btn_yes)
 
@@ -72,6 +75,16 @@ class QuestionnaireActivity : AppCompatActivity() {
 
         // Suppress dark mode
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
+
+        // HOSPITALIZATION RISK
+        // <= 1.2 Close to or lower than average
+        // > 1.2 to <= 2	Moderately elevated
+        // > 2 to <= 5	Substantially elevated
+        // > 5 to <= 10	High
+        // > 10	Very High
+
+        // e^(log
     }
 
     override fun onBackPressed() {
@@ -79,28 +92,4 @@ class QuestionnaireActivity : AppCompatActivity() {
         startActivity(Intent(this, MainActivity::class.java))
         this.finish()
     }
-
-//    private fun setQuestion(){
-//        val question = mQuestionsList!![mCurrentPosition - 1]
-//
-//        // Progress Bar
-//        questionProgressBar.progress = mCurrentPosition
-//        questionProgress.text = mCurrentPosition.toString()
-//        questionTotal.text = "/" + questionProgressBar.max
-//
-//        // Card Info
-//        questionTitle.text = question.question
-//        questionDescription.text = question.description
-//    }
-
-//    fun clickedButton(view: View?) {
-//        if (mCurrentPosition - 1 < 1){
-//            mQuestionsList?.get(mCurrentPosition - 1)?.answer = view.toString().contains("yesButton")
-//            //Log.i("joseTest", mCurrentPosition.toString())
-//            mCurrentPosition+=1
-//            setQuestion()
-//        } else {
-//            // Change to multiple choices question (last one)
-//        }
-//    }
 }

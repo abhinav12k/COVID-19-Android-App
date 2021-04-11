@@ -473,7 +473,6 @@
 				app:layout_constraintStart_toStartOf="parent"
 				app:layout_constraintTop_toBottomOf="@+id/cv_line" />
 
-
 		<com.google.android.material.card.MaterialCardView
 				android:id="@+id/map_card"
 				android:layout_width="match_parent"
