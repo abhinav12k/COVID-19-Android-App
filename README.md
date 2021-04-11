@@ -11,7 +11,7 @@ An Android application for visualizing COVID-19 data, and asserting individuals'
 
 ## Screen Shots
 
-![Website](1.png)
+![Website](img/1.png)
 
 ## Technologies Used
 
