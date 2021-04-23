@@ -53,8 +53,6 @@ const makeChoroplethMap = (inData, inStates, inTotal, inType, inHeigth, inWidth)
     const projection = d3.geoAlbersUsa();
     const path = d3.geoPath(projection);
 
-    console.log(inType)
-
     // Get color 
     const color = (inType == "INFECTED") ? d3.scaleSequential(d3.interpolateOranges) :
         (inType == "DEATHS") ? d3.scaleSequential(d3.interpolateReds) :
@@ -95,6 +93,7 @@ const makeChoroplethMap = (inData, inStates, inTotal, inType, inHeigth, inWidth)
 }
 
 // Test values
+
 // const data = "[0, 1572630, 419780, 957700, 2228720, 12508900, 1786375, 1187170, 321505, 6842950, 3251515, 474825, 1006340, 527340, 3254090, 2114260, 923165, 1437820, 1490010, 2275365, 1947880, 455595, 3233095, 1773365, 1966255, 949230, 348425, 3279780, 251490, 609885, 455795, 2879810, 682000, 943660, 3663460, 3761830, 1242325, 1352040, 3700905, 359235, 1612435, 281685, 2150915, 8568025, 832740, 2530695, 206780, 2230505, 1751275, 567485, 180235]"
 // const states = "[All States, Alabama, Alaska, Arkansas, Arizona, California, Colorado, Connecticut, Delaware, Florida, Georgia, Hawaii, Iowa, Idaho, Illinois, Indiana, Kansas, Kentucky, Louisiana, Massachusetts, Maryland, Maine, Michigan, Minnesota, Missouri, Mississippi, Montana, North Carolina, North Dakota, Nebraska, New Hampshire, New Jersey, New Mexico, Nevada, New York, Ohio, Oklahoma, Oregon, Pennsylvania, Rhode Island, South Carolina, South Dakota, Tennessee, Texas, Utah, Virginia, Vermont, Washington, Wisconsin, West Virginia, Wyoming]"
 // const total = "110902110"
