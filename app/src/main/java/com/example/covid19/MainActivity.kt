@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
-import android.graphics.Color
 import android.os.Bundle
 import android.text.Spannable
 import android.text.TextPaint
@@ -134,7 +133,7 @@ class MainActivity : AppCompatActivity() {
         d3WebView.setInitialScale(1)
 
         // Get phone's SharePreferences
-        val sharedPreferences = getSharedPreferences("COVID_19", Context.MODE_PRIVATE);
+        val sharedPreferences = getSharedPreferences("COVID_19", Context.MODE_PRIVATE)
 
         // Set today's date text
         dateTextView.text = SimpleDateFormat("EEEE, MMM d, yyyy", Locale.US).format(Calendar.getInstance().time)
@@ -449,13 +448,13 @@ class MainActivity : AppCompatActivity() {
             // Determines the main color
             mainColor = when (visSelected) {
                 "INFECTED" -> {
-                    ContextCompat.getColor(this@MainActivity, R.color.orange);
+                    ContextCompat.getColor(this@MainActivity, R.color.orange)
                 }
                 "VACCINATED" -> {
-                    ContextCompat.getColor(this@MainActivity, R.color.green);
+                    ContextCompat.getColor(this@MainActivity, R.color.green)
                 }
                 else -> {
-                    ContextCompat.getColor(this@MainActivity, R.color.red);
+                    ContextCompat.getColor(this@MainActivity, R.color.red)
                 }
             }
 

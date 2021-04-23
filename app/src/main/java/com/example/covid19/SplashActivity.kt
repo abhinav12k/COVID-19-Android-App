@@ -178,7 +178,7 @@ class SplashActivity : AppCompatActivity() {
      * e.g "NEWYORK_INFECTED_LIST_0 = 1, NEWYORK_INFECTED_LIST_1 = 12, ..."
      *     "NEWYORK_INFECTED_LIST_SUM_0 = 1, NEWYORK_INFECTED_LIST_SUM = 13, ..."
      *     "NEWYORK_INFECTED_LIST_DATE_0 = 2020-08-22, NEWYORK_INFECTED_LIST_DATE_1 = 2020-08-23, ..."
-     *     "NEWYORK_INFECTED_LIST_SIZE = SIZE"
+     *     "NEWYORK_INFECTED_LIST_SIZE = 150"
      */
 
     /**
