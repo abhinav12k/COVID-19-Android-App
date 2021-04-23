@@ -157,7 +157,7 @@
 								android:paddingEnd="20dp"
 								android:paddingBottom="10dp"
 								android:text="@string/hash_tags"
-								android:textColor="@color/gray"
+								android:textColor="@color/dark"
 								android:textSize="13sp" />
 
 						<TextView
@@ -537,7 +537,7 @@
 									android:layout_height="wrap_content"
 									android:paddingStart="5dp"
 									android:text="@string/card_text_1"
-									android:textColor="@color/black"
+									android:textColor="@color/dark"
 									android:textSize="16sp"
 									tools:ignore="RtlSymmetry" />
 
@@ -737,7 +737,7 @@
 									android:layout_width="match_parent"
 									android:layout_height="wrap_content"
 									android:paddingStart="5dp"
-									android:textColor="@color/black"
+									android:textColor="@color/dark"
 									android:textSize="16sp"
 									tools:ignore="RtlSymmetry" />
 						</LinearLayout>
