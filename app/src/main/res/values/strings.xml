@@ -76,7 +76,7 @@
 	<string name="risk_result2">Further, based on the information available from pandemic projections in your state of residence, the tool estimates an absolute rate of mortality of &lt;b>%1$s&lt;/b> (95%% CI: &lt;b>%2$s&lt;/b> - &lt;b>%3$s&lt;/b>) per &lt;b>%4$s&lt;/b> individuals in subgroups of the population with a similar risk profile to yours during the period of &lt;b>%5$s&lt;/b></string>
 	<string name="about">About</string>
 	<string name="this_app">About this App</string>
-	<string name="this_app_description">This an Android application is for visualizing current COVID-19 data and asserting individuals\&apos; death risk when infected of COVID-19 using various APIs and a systematic risk calculator developed by Johns Hopkins University</string>
+	<string name="this_app_description">This an Android application is for visualizing current COVID-19 data and asserting individuals\&apos; death risk when infected with COVID-19 using various APIs and a systematic risk calculator developed by Johns Hopkins University</string>
 	<string name="the_data">About the Data</string>
 	<string name="the_data_description1"><a href="https://covid19api.com/">COVID19API</a>, a free API for data on the Coronavirus sourced from <a href="https://github.com/CSSEGISandData/COVID-19">Johns Hopkins CSSE.</a></string>
 	<string name="the_data_description2"><a href="https://github.com/nytimes/covid-19-data">The New York Times COVID-19 Data</a>, a collection of COVID-19 Data gathered by The New York Times.</string>
