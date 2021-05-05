@@ -16,6 +16,7 @@ An Android application for visualizing current COVID-19 data and asserting indiv
 ## Technologies Used
 
 - Kotlin
+- JavaScript
 - Android Studio
 - API
 - D3.js
