@@ -1,6 +1,6 @@
 # COVID-19 Data Tracker and Death Risk Score
 
-An Android application for visualizing COVID-19 data, and asserting individuals' death risk score when infected using a systematic method developed by Johns Hopkins University
+An Android application for visualizing current COVID-19 data and asserting individuals' death risk when infected with COVID-19 using various APIs and a systematic risk calculator developed by Johns Hopkins University.
 
 ## Data Sources
 
@@ -15,8 +15,8 @@ An Android application for visualizing COVID-19 data, and asserting individuals'
 
 ## Technologies Used
 
-- Android development using Kotlin
-- API interactions
-- Big Data manipulation
-- Data Visualization using D3.js and Android Libraries
-- Layouts using XML
+- Kotlin
+- Android Studio
+- API
+- D3.js
+- XML
