@@ -21,3 +21,5 @@ An Android application for visualizing current COVID-19 data and asserting indiv
 - API
 - D3.js
 - XML
+- HTML 
+- CSS
