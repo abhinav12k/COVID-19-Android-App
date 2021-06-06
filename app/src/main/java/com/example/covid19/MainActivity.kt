@@ -31,7 +31,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.roundToInt
 
-
 class MainActivity : AppCompatActivity() {
     // Initialize global variables
     private lateinit var questionnaireCardView: CardView
