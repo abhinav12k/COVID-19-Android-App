@@ -1,11 +1,11 @@
-package com.example.covid19.data
+package com.application.covid19.data
 
 import com.google.gson.Gson
 import java.net.URL
 
-class VaccinationsPfizerRequest {
+class VaccinationsModernaRequest {
     companion object {
-        private const val URL = "https://data.cdc.gov/resource/saz5-9hgg.json"
+        private const val URL = "https://data.cdc.gov/resource/b7pe-5nws.json"
     }
 
     /**

@@ -1,4 +1,4 @@
-package com.example.covid19
+package com.application.covid19
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,7 +7,6 @@ import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.URLSpan
 import android.text.style.UnderlineSpan
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -16,11 +15,11 @@ import androidx.core.text.HtmlCompat
 
 class SettingsActivity : AppCompatActivity() {
 
-    lateinit var mainActivityButton: ImageView
+    private lateinit var mainActivityButton: ImageView
 
-    lateinit var dataDetailsTextView1: TextView
-    lateinit var dataDetailsTextView2: TextView
-    lateinit var dataDetailsTextView3: TextView
+    private lateinit var dataDetailsTextView1: TextView
+    private lateinit var dataDetailsTextView2: TextView
+    private lateinit var dataDetailsTextView3: TextView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,9 +35,9 @@ class SettingsActivity : AppCompatActivity() {
         dataDetailsTextView3 = findViewById(R.id.the_data_description3)
 
         // Main activity button listener
-        mainActivityButton.setOnClickListener(View.OnClickListener {
+        mainActivityButton.setOnClickListener {
             onBackPressed()
-        })
+        }
 
         // Remove title bar
         if (supportActionBar != null)

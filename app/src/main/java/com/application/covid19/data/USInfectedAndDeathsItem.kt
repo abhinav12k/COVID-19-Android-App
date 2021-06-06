@@ -1,4 +1,4 @@
-package com.example.covid19.data
+package com.application.covid19.data
 
 data class USInfectedAndDeathsItem(
         val Confirmed: Int,

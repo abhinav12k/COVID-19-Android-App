@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.covid19">
+    package="com.application.covid19">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -12,15 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.splash"
             android:fullBackupContent="@xml/backup_descriptor">
-        <activity android:name=".SplashActivity">
+        <activity android:name="com.application.covid19.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"/>
-        <activity android:name=".SettingsActivity" />
-        <activity android:name=".QuestionnaireActivity" />
+        <activity android:name="com.application.covid19.MainActivity"/>
+        <activity android:name="com.application.covid19.SettingsActivity" />
+        <activity android:name="com.application.covid19.QuestionnaireActivity" />
     </application>
 
 </manifest>

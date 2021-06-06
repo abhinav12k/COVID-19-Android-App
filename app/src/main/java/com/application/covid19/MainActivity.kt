@@ -1,5 +1,6 @@
-package com.example.covid19
+package com.application.covid19
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -20,8 +21,8 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
-import com.example.covid19.data.*
-import com.example.covid19.states.States
+import com.application.covid19.data.*
+import com.application.covid19.states.States
 import com.yabu.livechart.model.DataPoint
 import com.yabu.livechart.model.Dataset
 import com.yabu.livechart.view.LiveChart
@@ -79,6 +80,7 @@ class MainActivity : AppCompatActivity() {
     /**
      * It does a lot of stuff, read comments.
      */
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         // Show layout
         super.onCreate(savedInstanceState)
@@ -173,18 +175,18 @@ class MainActivity : AppCompatActivity() {
 
         // Infected, Vaccinated, and Deaths card listener
         // Updates the global variable visSelected and updates data visualizations
-        infectedLinearLayout.setOnClickListener(View.OnClickListener {
+        infectedLinearLayout.setOnClickListener {
             visSelected = "INFECTED"
             updateDataAndVisualizations(sharedPreferences, true)
-        })
-        vaccinatedLinearLayout.setOnClickListener(View.OnClickListener {
+        }
+        vaccinatedLinearLayout.setOnClickListener {
             visSelected = "VACCINATED"
             updateDataAndVisualizations(sharedPreferences, true)
-        })
-        deathsLinearLayout.setOnClickListener(View.OnClickListener {
+        }
+        deathsLinearLayout.setOnClickListener {
             visSelected = "DEATHS"
             updateDataAndVisualizations(sharedPreferences, true)
-        })
+        }
 
         // WebView listener
         d3WebView.addJavascriptInterface( object : Any() {
@@ -192,18 +194,18 @@ class MainActivity : AppCompatActivity() {
             fun setStateText(state: String) {
                 runOnUiThread {
                     // Format selected state from "New York" to "NEWYORK" or "All States" to "US"
-                    val selectedFormatted = state.replace(" ", "").toUpperCase(Locale.US)
+                    val selectedFormatted = state.replace(" ", "").uppercase(Locale.US)
 
                     // Gets the state selected and totals
                     val stateText = "State: $state"
-                    val totalText =  "Total ${visSelected.toLowerCase(Locale.US)}: ${sharedPreferences.getString("${selectedFormatted}_${visSelected}", "0")}"
+                    val totalText =  "Total ${visSelected.lowercase(Locale.US)}: ${sharedPreferences.getString("${selectedFormatted}_${visSelected}", "0")}"
 
                     // Sets the state selected and totals
                     d3StateTextView.text = stateText
                     d3TotalTextView.text = totalText
 
                     // Sets spinner value to match map selection
-                    var index = 0;
+                    var index = 0
                     for (i in 0 until statesSpinner.count) {
                         if (statesSpinner.getItemAtPosition(i).toString() == state) {
                             index = i
@@ -218,7 +220,7 @@ class MainActivity : AppCompatActivity() {
                 runOnUiThread {
                     // Gets the state selected and totals
                     val stateText = "State: All States"
-                    val totalText =  "Total ${visSelected.toLowerCase(Locale.US)}: ${sharedPreferences.getString("US_${visSelected}", "0")}"
+                    val totalText =  "Total ${visSelected.lowercase(Locale.US)}: ${sharedPreferences.getString("US_${visSelected}", "0")}"
 
                     // Sets the state selected and totals
                     d3StateTextView.text = stateText
@@ -231,21 +233,21 @@ class MainActivity : AppCompatActivity() {
         }, "kotlin")
 
         // Draw Choropleth Map
-        setChoroplethMap(d3WebView, sharedPreferences);
+        setChoroplethMap(d3WebView, sharedPreferences)
 
         // Settings link listener
-        settingsImageView.setOnClickListener(View.OnClickListener {
+        settingsImageView.setOnClickListener {
             // Starts settings activity
             val intent = Intent(this, SettingsActivity::class.java)
             startActivity(intent)
-        })
+        }
 
         // Questionnaire link listener
-        questionnaireCardView.setOnClickListener(View.OnClickListener {
+        questionnaireCardView.setOnClickListener {
             // Starts questionnaire activity
             val intent = Intent(this, QuestionnaireActivity::class.java)
             startActivity(intent)
-        })
+        }
 
         // Removes hyperlink's underlining
         val s = HtmlCompat.fromHtml("<a href='https://covid.cdc.gov/covid-data-tracker/#datatracker-home'>Details</a>", HtmlCompat.FROM_HTML_MODE_LEGACY) as Spannable
@@ -288,7 +290,8 @@ class MainActivity : AppCompatActivity() {
         latestUpdateTitleTextView.text = latestUpdateTileText
 
         // Format selected state from "New York" to "NEWYORK" or "All States" to "US"
-        val state = if (stateSelected == "All States") "US" else stateSelected.toUpperCase(Locale.ROOT).replace(" ", "")
+        val state = if (stateSelected == "All States") "US" else stateSelected.uppercase(Locale.ROOT)
+            .replace(" ", "")
 
         // Set last updated text
         latestUpdateTextView.text = sharedPreferences.getString("${state}_UPDATED", "Unknown")
@@ -319,11 +322,13 @@ class MainActivity : AppCompatActivity() {
      */
     private fun setInitialLineChartToolTip(sharedPreferences: SharedPreferences) {
         // Set LineChart subtitle text
-        val lineChartText = "$codeSelected ${visSelected.toLowerCase(Locale.ROOT).capitalize(Locale.ROOT)} Over Time"
+        val lineChartText = "$codeSelected ${visSelected.lowercase(Locale.ROOT)
+            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }} Over Time"
         lineChartTextView.text = lineChartText
 
         // Format selected state from "New York" to "NEWYORK" or "All States" to "US"
-        val state = if (stateSelected == "All States") "US" else stateSelected.toUpperCase(Locale.ROOT).replace(" ", "")
+        val state = if (stateSelected == "All States") "US" else stateSelected.uppercase(Locale.ROOT)
+            .replace(" ", "")
 
         // Get list size
         val listSize = sharedPreferences.getInt("${state}_${visSelected}_LIST_SIZE", 0)
@@ -337,8 +342,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Get totals and daily
-        val lineChartSumText = "Total ${visSelected.toLowerCase(Locale.ROOT)}: ${NumberFormat.getNumberInstance(Locale.US).format(sharedPreferences.getString("${state}_${visSelected}_LIST_SUM_${listSize - 1}", "0")!!.toFloat())}"
-        val lineChartDailyText = "${visSelected.toLowerCase(Locale.ROOT).capitalize(Locale.ROOT)}: ${NumberFormat.getNumberInstance(Locale.US).format(sharedPreferences.getString("${state}_${visSelected}_LIST_${listSize - 1}", "0")!!.toFloat())}"
+        val lineChartSumText = "Total ${visSelected.lowercase(Locale.ROOT)}: ${NumberFormat.getNumberInstance(Locale.US).format(sharedPreferences.getString("${state}_${visSelected}_LIST_SUM_${listSize - 1}", "0")!!.toFloat())}"
+        val lineChartDailyText = "${visSelected.lowercase(Locale.ROOT)
+            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }}: ${NumberFormat.getNumberInstance(Locale.US).format(sharedPreferences.getString("${state}_${visSelected}_LIST_${listSize - 1}", "0")!!.toFloat())}"
 
         // Set date, totals, and daily text
         lineChartDateTextView.text = lineChartDateText
@@ -359,7 +365,8 @@ class MainActivity : AppCompatActivity() {
         val recorded : MutableList<DataPoint> = mutableListOf()
 
         // Format selected state from "New York" to "NEWYORK" or "All States" to "US"
-        val state = if (stateSelected == "All States") "US" else stateSelected.toUpperCase(Locale.ROOT).replace(" ", "")
+        val state = if (stateSelected == "All States") "US" else stateSelected.uppercase(Locale.ROOT)
+            .replace(" ", "")
 
         // Get list size from SharedPreferences
         val listSize = sharedPreferences.getInt("${state}_${visSelected}_LIST_SIZE", 0)
@@ -381,13 +388,13 @@ class MainActivity : AppCompatActivity() {
 
             // Add all the data of non-negative numbers to the lists
             dateRecorded.add(
-                sharedPreferences.getString("${state}_${visSelected}_LIST_DATE_$i", "No Date")!!
+                sharedPreferences.getString("${state}_${visSelected}_LIST_DATE_$i", "0")!!
             )
             recorded.add(
                 DataPoint((i - skippedData).toFloat(), data)
             )
             cumulativeRecorded.add(
-                DataPoint((i - skippedData).toFloat(), sharedPreferences.getString("${state}_${visSelected}_LIST_SUM_$i", "No Date")!!.toFloat())
+                DataPoint((i - skippedData).toFloat(), sharedPreferences.getString("${state}_${visSelected}_LIST_SUM_$i", "0")!!.toFloat())
             )
         }
 
@@ -416,8 +423,9 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     // Gets totals and daily numbers
-                    val lineChartSumText = "Total ${visSelected.toLowerCase(Locale.ROOT)}: ${NumberFormat.getNumberInstance(Locale.US).format(cumulativeRecorded[i].y)}"
-                    val lineChartDailyText = "${visSelected.toLowerCase(Locale.ROOT).capitalize(Locale.ROOT)}: ${NumberFormat.getNumberInstance(Locale.US).format(recorded[i].y)}"
+                    val lineChartSumText = "Total ${visSelected.lowercase(Locale.ROOT)}: ${NumberFormat.getNumberInstance(Locale.US).format(cumulativeRecorded[i].y)}"
+                    val lineChartDailyText = "${visSelected.lowercase(Locale.ROOT)
+                        .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }}: ${NumberFormat.getNumberInstance(Locale.US).format(recorded[i].y)}"
 
                     // Sets the LineChart tooltip text
                     lineChartDateTextView.text = lineChartDateText
@@ -474,18 +482,25 @@ class MainActivity : AppCompatActivity() {
      */
     private fun setInitialChoroplethToolTip(sharedPreferences: SharedPreferences) {
         // Set Choropleth subtitle text
-        val choroplethText = "US ${visSelected.toLowerCase(Locale.ROOT).capitalize(Locale.ROOT)} Map"
+        val choroplethText = "US ${
+            visSelected.lowercase(Locale.ROOT)
+            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }} Map"
         choroplethTextView.text = choroplethText
 
         // Format selected state from "New York" to "NEWYORK" or "All States" to "US"
-        val state = if (stateSelected == "All States") "US" else stateSelected.toUpperCase(Locale.ROOT).replace(" ", "")
+        val state = if (stateSelected == "All States") "US" else stateSelected.uppercase(Locale.ROOT)
+            .replace(" ", "")
 
         // Get list size from SharedPreferences
         val listSize = sharedPreferences.getInt("${state}_${visSelected}_LIST_SIZE", 0)
 
         // Gets the state selected and totals
-        val d3StateText = "State: ${stateSelected.capitalize(Locale.ROOT)}"
-        val d3TotalText = "Total ${visSelected.toLowerCase(Locale.ROOT)}: ${NumberFormat.getNumberInstance(Locale.US).format(sharedPreferences.getString("${state}_${visSelected}_LIST_SUM_${listSize - 1}", "0")!!.toFloat())}"
+        val d3StateText = "State: ${stateSelected.replaceFirstChar {
+            if (it.isLowerCase()) it.titlecase(
+                Locale.ROOT
+            ) else it.toString()
+        }}"
+        val d3TotalText = "Total ${visSelected.lowercase(Locale.ROOT)}: ${NumberFormat.getNumberInstance(Locale.US).format(sharedPreferences.getString("${state}_${visSelected}_LIST_SUM_${listSize - 1}", "0")!!.toFloat())}"
 
         // Sets the Choropleth tooltip text
         d3StateTextView.text = d3StateText
@@ -517,7 +532,7 @@ class MainActivity : AppCompatActivity() {
                 // Get Total numbers of each state of [visSelected]
                 statesStringArray.forEach { state ->
                     // Format selected state from "New York" to "NEWYORK" or "All States" to "US"
-                    val selectedFormatted = state.replace(" ", "").toUpperCase(Locale.US)
+                    val selectedFormatted = state.replace(" ", "").uppercase(Locale.US)
                     // Add value to list
                     data.add(sharedPreferences.getString("${selectedFormatted}_${visSelected}", "0")!!.replace(",", ""))
                 }

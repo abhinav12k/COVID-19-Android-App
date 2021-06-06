@@ -1,4 +1,4 @@
-package com.example.covid19
+package com.application.covid19
 
 import android.content.Context
 import android.content.Intent
@@ -8,7 +8,7 @@ import android.os.StrictMode
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import com.example.covid19.data.*
+import com.application.covid19.data.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import java.io.*
@@ -40,7 +40,7 @@ class SplashActivity : AppCompatActivity() {
         StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())
 
         // Get String Array states from arrays.xml
-        val states = resources.getStringArray(R.array.states);
+        val states = resources.getStringArray(R.array.states)
 
         // Request data from APIs
         doAsync {
@@ -120,11 +120,11 @@ class SplashActivity : AppCompatActivity() {
         statesVaccinatedOverTime: MutableMap<String, List<VaccinationsItem>>
     ) {
         // Access to the phone's Shared Preferences
-        val sharedPreferences: SharedPreferences = getSharedPreferences("COVID_19", Context.MODE_PRIVATE);
-        val editor = sharedPreferences.edit();
+        val sharedPreferences: SharedPreferences = getSharedPreferences("COVID_19", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
 
         // Get String Array states from arrays.xml
-        val states = resources.getStringArray(R.array.states);
+        val states = resources.getStringArray(R.array.states)
 
         // Add vaccination data collected from all states
         addDATACDCToSharedPreferencesSTATES(editor, states, statesVaccinatedOverTime)
@@ -146,11 +146,11 @@ class SplashActivity : AppCompatActivity() {
         statesInfectedAndDeathsOverTime: MutableMap<String, List<StatesInfectedAndDeathsItem>>
     ) {
         // Access to the phone's Shared Preferences
-        val sharedPreferences: SharedPreferences = getSharedPreferences("COVID_19", Context.MODE_PRIVATE);
-        val editor = sharedPreferences.edit();
+        val sharedPreferences: SharedPreferences = getSharedPreferences("COVID_19", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
 
         // Get String Array states from arrays.xml
-        val states = resources.getStringArray(R.array.states);
+        val states = resources.getStringArray(R.array.states)
 
         // Adds infected and deaths data before 01/15/2021
         val oldDataStateSizes = getMissingInfectedAndDeathData(editor)
@@ -248,7 +248,7 @@ class SplashActivity : AppCompatActivity() {
         states.forEach { state ->
             if (state != "All States") {
                 // Format state from "New York" to "NEWYORK"
-                val stateFormatted = state.replace(" ", "").toUpperCase(Locale.ROOT)
+                val stateFormatted = state.replace(" ", "").uppercase(Locale.ROOT)
 
                 // Get the state vaccinated list
                 val stateCombinedVaccinations = statesVaccinatedOverTime[state]!!
@@ -400,7 +400,7 @@ class SplashActivity : AppCompatActivity() {
                 lastDeathsDaily = deathsDaily
 
                 // Current infected, deaths, and state
-                state = lineSeparated[0].replace(" ", "").toUpperCase(Locale.ROOT)
+                state = lineSeparated[0].replace(" ", "").uppercase(Locale.ROOT)
                 infectedDaily = lineSeparated[1].toInt()
                 deathsDaily = lineSeparated[2].toInt()
 
@@ -434,7 +434,7 @@ class SplashActivity : AppCompatActivity() {
             } catch (e: IOException) {
                 e.printStackTrace()
             }
-            return stateDataSize;
+            return stateDataSize
         }
     }
 
@@ -452,7 +452,7 @@ class SplashActivity : AppCompatActivity() {
         states.forEach { state ->
             if (state != "All States") {
                 // Format state from "New York" to "NEWYORK"
-                val stateFormatted = state.replace(" ", "").toUpperCase(Locale.ROOT)
+                val stateFormatted = state.replace(" ", "").uppercase(Locale.ROOT)
 
                 // Get the state infected and deaths list
                 val infectedAndDeaths = statesInfectedAndDeathsOverTime[state]!!

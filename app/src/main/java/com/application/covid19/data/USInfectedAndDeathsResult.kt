@@ -1,4 +1,4 @@
-package com.example.covid19.data
+package com.application.covid19.data
 
 import java.text.SimpleDateFormat
 import java.util.*

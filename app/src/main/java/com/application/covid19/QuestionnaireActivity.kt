@@ -1,11 +1,10 @@
-package com.example.covid19
+package com.application.covid19
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Html
 import android.text.InputFilter
-import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -13,7 +12,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.text.HtmlCompat
 import androidx.core.view.forEach
 import androidx.core.view.isVisible
-import org.jetbrains.anko.find
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.nio.charset.Charset
@@ -102,16 +100,16 @@ class QuestionnaireActivity : AppCompatActivity() {
         result2textView = findViewById(R.id.result_tv_2)
 
         // Main activity button listener
-        mainActivityButton.setOnClickListener(View.OnClickListener {
+        mainActivityButton.setOnClickListener {
             onBackPressed()
-        })
+        }
 
         // Next button listener
-        nextButton.setOnClickListener(View.OnClickListener {
+        nextButton.setOnClickListener {
             // Get current question from progressBar
             val currentQuestion = progressBar.progress
             validateInput(currentQuestion)
-        })
+        }
 
         // Remove title bar
         if (supportActionBar != null)
@@ -204,9 +202,11 @@ class QuestionnaireActivity : AppCompatActivity() {
                     if (text == "Any Cancer") cancer = radio.isChecked
                 }
 
-                if (diabetes) nextQuestion(currentQuestion, 0)
-                else if (cancer) nextQuestion(currentQuestion, 1)
-                else showResult()
+                when {
+                    diabetes -> nextQuestion(currentQuestion, 0)
+                    cancer -> nextQuestion(currentQuestion, 1)
+                    else -> showResult()
+                }
             }
             10 -> {
                 val selected = radioDiabetes.checkedRadioButtonId

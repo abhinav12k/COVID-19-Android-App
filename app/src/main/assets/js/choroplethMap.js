@@ -1,7 +1,7 @@
 /*
     Makes a D3.js Choropleth Map based on parameters passed
 */
-const makeChoroplethMap = (inData, inStates, inTotal, inType, inHeigth, inWidth) => {
+const makeChoroplethMap = (inData, inStates, inTotal, inType, inHeight, inWidth) => {
     // Creates a data and state array from strings
     const dataArray = (inData.substr(1, inData.length - 2)).split(",").map(data => data.replace(" ", ""));
     const statesArray = (inStates.substr(1, inStates.length - 2)).split(",").map(state => state.substr(1));
@@ -22,11 +22,11 @@ const makeChoroplethMap = (inData, inStates, inTotal, inType, inHeigth, inWidth)
 
     // Calculate margin, width and height
     const margin = {
-        top: parseInt(inHeigth) * 0.15,
+        top: parseInt(inHeight) * 0.15,
         left: parseInt(inWidth) * -0.075,
     };
     const width = parseInt(inWidth) - margin.left;
-    const height = parseInt(inHeigth) - margin.top;
+    const height = parseInt(inHeight) - margin.top;
 
     // Create svg 
     const svg = d3
@@ -64,7 +64,7 @@ const makeChoroplethMap = (inData, inStates, inTotal, inType, inHeigth, inWidth)
         const statesTopography = topojson.feature(us, us.objects.states).features;
         const nationTopography = topojson.feature(us, us.objects.nation).features[0];
 
-        // Make projection fit the svg dimentions
+        // Make projection fit the svg dimensions
         projection.fitSize([width, height], nationTopography);
 
         // Add values of each state from map 

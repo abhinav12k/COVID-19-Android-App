@@ -1,4 +1,4 @@
-package com.example.covid19.data
+package com.application.covid19.data
 
 data class VaccinationsItem(
         val _1st_dose_allocations: String,

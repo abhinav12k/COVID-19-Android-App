@@ -1,4 +1,4 @@
-package com.example.covid19.data
+package com.application.covid19.data
 
 import com.google.gson.Gson
 import java.net.URL

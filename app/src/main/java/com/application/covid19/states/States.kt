@@ -1,4 +1,4 @@
-package com.example.covid19.states
+package com.application.covid19.states
 
 class States {
 
